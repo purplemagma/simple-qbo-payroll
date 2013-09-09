@@ -4,12 +4,10 @@ import javax.servlet.http.HttpSession;
 
 import com.intuit.ipp.core.Context;
 import com.intuit.ipp.core.ServiceType;
-import com.intuit.ipp.data.Company;
+import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.security.OAuthAuthorizer;
 import com.intuit.ipp.services.DataService;
-
-import java.util.List;
 
 public class IntuitService
 {
@@ -35,12 +33,13 @@ public class IntuitService
       return null;
     }
     
-    context = new Context(authorizer, Config.getProperty("appToken"), dataSource, realmId);
+    context = new Context(this.authorizer, Config.getProperty("appToken"), this.dataSource, this.realmId);
+    this.session.setAttribute("ippContext", context);
     
     return context;
   }
   
-  public Company getIPPCompany() throws FMSException {
+  public CompanyInfo getCompany() throws FMSException {
     Context context = getContext();
     
     if (context == null) {
@@ -48,12 +47,9 @@ public class IntuitService
     }
     
     DataService dataService = new DataService(context);
-    List<Company> companies = dataService.findAll(new Company());
-    
-    if (companies == null || companies.size() != 1) {
-      return null;
-    }
-    
-    return companies.get(0);
+    CompanyInfo company = new CompanyInfo();
+    company.setId("");
+    company = dataService.findById(company);
+    return company;
   }
 }

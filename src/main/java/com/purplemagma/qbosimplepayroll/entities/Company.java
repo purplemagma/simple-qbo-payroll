@@ -20,7 +20,7 @@ public class Company
   }
 
   @DynamoDBAttribute(attributeName="businessName")
-  String getBusinessName() {
+  public String getBusinessName() {
     return businessName;
   }
   

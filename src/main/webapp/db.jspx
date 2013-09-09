@@ -6,7 +6,7 @@
   <head>
     <jsp:useBean id="database" class="com.purplemagma.qbosimplepayroll.Database"></jsp:useBean>
     <jsp:directive.page contentType="text/html;charset=UTF-8"></jsp:directive.page> 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
     <script type="text/javascript" src="js/utils.js"><jsp:text/></script>
     <script type="text/javascript">
       $(document).ready(function() {

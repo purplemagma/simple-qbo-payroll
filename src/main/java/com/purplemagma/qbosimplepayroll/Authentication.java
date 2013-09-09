@@ -71,7 +71,7 @@ public class Authentication
   private String getRealmIdFromRequest() {
     String realmId = request.getParameter("openid.alias3.value.alias4");
     
-    if (realmId != null && realmId.length() > 0) {
+    if (realmId != null && realmId.length() > 0 && !realmId.equals("1")) {
       return realmId;
     }
     

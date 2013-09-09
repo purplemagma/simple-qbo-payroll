@@ -25,7 +25,8 @@
       });      
     </script>
     </c:if>
-    Hello, world! Simple Payroll.
-    ${payrollService.company.realmId}
+    Hello, world! Simple Payroll.<br/>
+    Company Id: ${payrollService.company.realmId}<br/>
+    Business Name: ${payrollService.company.businessName}<br/>
   </body>
 </html>

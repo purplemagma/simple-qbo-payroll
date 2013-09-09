@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sdk-config>
+  <!-- <proxy>
+    <host>127.0.0.1</host>
+    <port>8888</port>
+    <keystore>
+      <path>D:\Intuit\Misc\.keystore</path>
+      <password>keystore</password>
+    </keystore>
+  </proxy> -->
+</sdk-config>

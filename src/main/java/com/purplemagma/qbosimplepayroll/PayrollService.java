@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.security.OAuthAuthorizer;
 import com.purplemagma.qbosimplepayroll.entities.Company;
@@ -128,10 +129,10 @@ public class PayrollService
     }
     
     IntuitService is = new IntuitService(request.getSession(), authorizer, dataSource, realmId);
-    com.intuit.ipp.data.Company ippCompany = null;
+    CompanyInfo ippCompany = null;
     
     try {
-      ippCompany = is.getIPPCompany();
+      ippCompany = is.getCompany();
     } catch (FMSException ex) {       
     }
     
