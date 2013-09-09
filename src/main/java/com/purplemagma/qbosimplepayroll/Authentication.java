@@ -17,7 +17,6 @@ import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.FetchRequest;
 
 import com.purplemagma.qbosimplepayroll.Config;
-import com.purplemagma.qbosimplepayroll.entities.User;
 
 import java.net.URI;
 import java.net.URL;
