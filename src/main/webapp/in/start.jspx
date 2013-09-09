@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<html
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:fn="http://java.sun.com/jsp/jstl/functions" >
+  <head>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"></jsp:directive.page> 
+    <jsp:useBean id="appconfig" class="com.purplemagma.qbosimplepayroll.Config"></jsp:useBean>
+    <jsp:useBean id="payrollService" class="com.purplemagma.qbosimplepayroll.PayrollService"></jsp:useBean>
+    <jsp:setProperty name="payrollService" property="request" value="${pageContext.request}"></jsp:setProperty>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
+    <script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"><jsp:text/></script>
+  </head>
+  <body bgcolor="white">
+    <script type="text/javascript">
+      intuit.ipp.anywhere.setup({
+        menuProxy: '${appconfig.menuProxy}',
+        grantUrl: '${appconfig.grantUrl}'
+      });
+    </script>
+    <c:if test="${not payrollService.hasValidOAuthConsumer}">
+    <script type="text/javascript">
+      $(document).ready(function() {
+          intuit.ipp.anywhere.directConnectToIntuit();
+      });      
+    </script>
+    </c:if>
+    Hello, world! Simple Payroll.
+    ${payrollService.company.realmId}
+  </body>
+</html>
