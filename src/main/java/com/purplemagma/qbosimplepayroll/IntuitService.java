@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import com.intuit.ipp.core.Context;
 import com.intuit.ipp.core.ServiceType;
+import com.intuit.ipp.data.Company;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.security.OAuthAuthorizer;
@@ -47,9 +48,9 @@ public class IntuitService
     }
     
     DataService dataService = new DataService(context);
-    CompanyInfo company = new CompanyInfo();
-    company.setId("");
-    company = dataService.findById(company);
+    CompanyInfo filter = new CompanyInfo();
+    filter.setId(this.realmId);
+    CompanyInfo company = dataService.findById(filter);
     return company;
   }
 }
