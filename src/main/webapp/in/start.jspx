@@ -9,7 +9,7 @@
     <jsp:useBean id="payrollService" class="com.purplemagma.qbosimplepayroll.PayrollService"></jsp:useBean>
     <jsp:setProperty name="payrollService" property="request" value="${pageContext.request}"></jsp:setProperty>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
-    <script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"><jsp:text/></script>
+    <script type="text/javascript" src="${appconfig.intuitAnywhereJsUrl}"><jsp:text/></script>
   </head>
   <body bgcolor="white">
     <script type="text/javascript">

@@ -1,11 +1,37 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <sdk-config>
-  <!-- <proxy>
-    <host>127.0.0.1</host>
-    <port>8888</port>
-    <keystore>
-      <path>D:\Intuit\Misc\.keystore</path>
-      <password>keystore</password>
-    </keystore>
-  </proxy> -->
+   <baseURL>
+     <qbo>https://e2e.qbo.intuit.com/qbo1/v3/company</qbo>
+     <platformService>https://appcenter-stage.intuit.com/db</platformService>
+  </baseURL>
+  <retry>
+    <mode>fixed</mode>
+    <fixed>
+      <count>3</count>
+      <interval>30</interval>
+    </fixed>
+    <incremental>
+      <count>3</count>
+      <interval>30</interval>
+      <increment>5</increment>
+    </incremental>
+    <exponential>
+      <count>3</count>
+      <minBackoff>5</minBackoff>
+      <maxBackoff>100</maxBackoff>
+      <deltaBackoff>10</deltaBackoff>
+    </exponential>    
+  </retry>
+  
+  <message>
+    <request>
+      <compression>gzip</compression>
+      <serialization>xml</serialization>
+    </request>
+  
+    <response>
+      <compression>gzip</compression>
+      <serialization>xml</serialization>
+    </response>
+  </message>
 </sdk-config>

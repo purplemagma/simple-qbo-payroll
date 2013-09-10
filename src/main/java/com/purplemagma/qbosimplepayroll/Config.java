@@ -26,4 +26,8 @@ public class Config
   public String getMenuProxy() {
     return Config.getProperty("app_url");    
   }
+  
+  public String getIntuitAnywhereJsUrl() {
+    return Config.getProperty("ia_js_url");
+  }
 }
