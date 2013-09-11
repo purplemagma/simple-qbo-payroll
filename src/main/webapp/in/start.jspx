@@ -14,19 +14,24 @@
   <body bgcolor="white">
     <script type="text/javascript">
       intuit.ipp.anywhere.setup({
-        menuProxy: '${appconfig.menuProxy}',
         grantUrl: '${appconfig.grantUrl}'
       });
     </script>
-    <c:if test="${not payrollService.hasValidOAuthConsumer}">
-    <script type="text/javascript">
-      $(document).ready(function() {
-          intuit.ipp.anywhere.directConnectToIntuit();
-      });      
-    </script>
-    </c:if>
-    Hello, world! Simple Payroll.<br/>
-    Company Id: ${payrollService.company.realmId}<br/>
-    Business Name: ${payrollService.company.businessName}<br/>
+    <c:choose>
+        <c:when test="${not payrollService.hasValidOAuthConsumer}">
+            <script type="text/javascript">
+              $(document).ready(function() {
+                  intuit.ipp.anywhere.directConnectToIntuit();
+              });      
+            </script>
+            Redirecting to get oAuth tokens.
+        </c:when>
+        <c:otherwise>
+            Hello, world! Simple Payroll.<br/>
+            Company Id: ${payrollService.company.realmId}<br/>
+            Business Name: ${payrollService.company.businessName}<br/>
+            Customer Count: ${payrollService.intuitService.numberOfCustomers}<br/>
+        </c:otherwise>
+    </c:choose>
   </body>
 </html>

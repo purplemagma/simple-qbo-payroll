@@ -12,6 +12,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.intuit.ipp.data.CompanyInfo;
+import com.intuit.ipp.data.Error;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.security.OAuthAuthorizer;
 import com.purplemagma.qbosimplepayroll.entities.Company;
@@ -50,7 +51,7 @@ public class PayrollService
     return mapper.load(Company.class, realmId, new DynamoDBMapperConfig(DynamoDBMapperConfig.ConsistentReads.CONSISTENT));
   }
   
-  public Company findOrCreateRealm(String realmId, boolean logIn, String businessName) throws IOException {
+  public Company findOrCreateRealm(String realmId, boolean logIn) throws IOException {
     if (realmId == null) {
       throw new RuntimeException("No realm");
     }
@@ -60,7 +61,6 @@ public class PayrollService
     if (company == null) {
       company = new Company();
       company.setRealmId(realmId);
-      company.setBusinessName(businessName);
       mapper.save(company, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
     }
     
@@ -97,7 +97,7 @@ public class PayrollService
       user.setFirstName(firstName);
       user.setLastName(lastName);
       user.setEmail(email);
-      mapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
+      this.mapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
     }
     
     if (logIn) {
@@ -116,51 +116,70 @@ public class PayrollService
   }
   
   public String login(String realmId, String userId, String firstName, String lastName, String email) throws IOException {
+    request.getSession().setAttribute("intuit_service", null);
+    request.getSession().setAttribute("validOAuthConsumer", null);
+
     if (userId == null) {
       userId = getUserId();
     }
-    User user = this.findOrCreateUser(userId, true, firstName, lastName, email);
-    OAuthAuthorizer authorizer = null;
-    String dataSource = user.getDataSource();
-    if (user.getoAuthToken() != null && user.getoAuthTokenSecret() != null) {
-      authorizer = new OAuthAuthorizer(Config.getProperty("oauth_consumer_key"),
-       Config.getProperty("oauth_consumer_secret"),
-       user.getoAuthToken(), user.getoAuthTokenSecret());
-    }
-    
-    IntuitService is = new IntuitService(request.getSession(), authorizer, dataSource, realmId);
-    CompanyInfo ippCompany = null;
-    
-    try {
-      ippCompany = is.getCompany();
-    } catch (FMSException ex) {       
-    }
-    
-    if (ippCompany != null) {
-      this.findOrCreateRealm(realmId, true, ippCompany.getCompanyName());
+    this.findOrCreateUser(userId, true, firstName, lastName, email);
+    Company company = this.findOrCreateRealm(realmId, true);
+
+    if (this.getHasValidOAuthConsumer()) {
+
+      String dataSource = company.getDataSource();
+      OAuthAuthorizer authorizer = new OAuthAuthorizer(Config.getProperty("oauth_consumer_key"),
+         Config.getProperty("oauth_consumer_secret"),
+         company.getoAuthToken(), company.getoAuthTokenSecret());
+      
+      IntuitService is = new IntuitService(request.getSession(), authorizer, dataSource, realmId);
+  
+      CompanyInfo ippCompany = null;    
+      try {
+        ippCompany = is.getCompany();
+      } catch (FMSException ex) {
+        for (Error error : ex.getErrorList()) {
+          if (error.getCode() != null && error.getCode().equals("100")) {
+            this.clearoAuth();
+            break;
+          }
+        }
+      }
+
+      if (ippCompany != null) {
+        company.setBusinessName(ippCompany.getCompanyName());
+        this.mapper.save(company, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
+        request.getSession().setAttribute("intuit_service", is);
+      }
     }
 
     return "/in/start.jspx";  
   }
   
+  public IntuitService getIntuitService() {
+    return (IntuitService) request.getSession().getAttribute("intuit_service");
+  }
+  
   public String saveoAuth(String realmId, String dataSource, OAuthConsumer consumer) throws IOException {
-    User user = getUser();
-    user.setoAuthToken(consumer.getToken());
-    user.setoAuthTokenSecret(consumer.getTokenSecret());
-    user.setDataSource(dataSource);
-    mapper.save(user);
+    Company company = getCompany();
+    company.setoAuthToken(consumer.getToken());
+    company.setoAuthTokenSecret(consumer.getTokenSecret());
+    // Only support QBO
+    company.setDataSource("QBO");
+    mapper.save(company, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
+    request.getSession().setAttribute("validOAuthConsumer", consumer);
     
-    return login(realmId, user.getUserId(), null, null, null);
+    return login(realmId, null, null, null, null);
   }
   
   public OAuthConsumer getValidOAuthConsumer() throws IOException {
     OAuthConsumer consumer = (OAuthConsumer) request.getSession().getAttribute("validOAuthConsumer");
     if (consumer == null) {
-      User user = getUser();
-      if (user != null && user.getoAuthToken() != null && user.getoAuthTokenSecret() != null) {
+      Company company = getCompany();
+      if (company != null && company.getoAuthToken() != null && company.getoAuthTokenSecret() != null) {
         consumer = new DefaultOAuthConsumer(Config.getProperty("oauth_consumer_key"),
           Config.getProperty("oauth_consumer_secret"));
-        consumer.setTokenWithSecret(user.getoAuthToken(), user.getoAuthTokenSecret());
+        consumer.setTokenWithSecret(company.getoAuthToken(), company.getoAuthTokenSecret());
         request.getSession().setAttribute("validOAuthConsumer", consumer);
       }
     }
@@ -176,5 +195,14 @@ public class PayrollService
     }
     
     return consumer != null;
+  }
+  
+  public void clearoAuth() throws IOException {
+    Company company = getCompany();
+    company.setoAuthToken(null);
+    company.setoAuthTokenSecret(null);
+    company.setDataSource(null);
+    mapper.save(company, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
+    request.getSession().setAttribute("validOAuthConsumer", null);
   }
 }

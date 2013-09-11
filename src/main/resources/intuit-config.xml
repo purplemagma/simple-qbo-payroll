@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <sdk-config>
    <baseURL>
-     <qbo>https://e2e.qbo.intuit.com/qbo1/v3/company</qbo>
+     <qbo>https://qa.qbo.intuit.com/qbo2/v3/company</qbo>
      <platformService>https://appcenter-stage.intuit.com/db</platformService>
   </baseURL>
   <retry>
@@ -30,7 +30,7 @@
     </request>
   
     <response>
-      <compression>gzip</compression>
+      <compression>none</compression>
       <serialization>xml</serialization>
     </response>
   </message>

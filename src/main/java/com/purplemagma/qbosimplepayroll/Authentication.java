@@ -68,7 +68,20 @@ public class Authentication
   }
   
   private String getRealmIdFromRequest() {
-    String realmId = request.getParameter("openid.alias3.value.alias4");
+    String realmId = request.getHeader("Referer");
+    if (realmId != null && realmId.length() > 8) {
+      int index = realmId.indexOf("realmId=");
+      if (index >= 0) {
+        realmId = realmId.substring(index+8);
+        index = realmId.indexOf("&");
+        if (index > 0) {
+          realmId = realmId.substring(0, index);
+        }
+        return realmId;
+      }
+    }
+
+    realmId = request.getParameter("openid.alias3.value.alias4");
     
     if (realmId != null && realmId.length() > 0 && !realmId.equals("1")) {
       return realmId;
@@ -78,20 +91,7 @@ public class Authentication
     if (realmId != null && realmId.length() > 0) {
       return realmId;
     }
-    
-    realmId = request.getHeader("Referer");
-    if (realmId != null && realmId.length() > 8) {
-      int index = realmId.indexOf("realmId=");
-      if (index >= 0) {
-        realmId = request.getHeader("Referer").substring(index+8);
-        index = realmId.indexOf("&");
-        if (index > 0) {
-          realmId = realmId.substring(0, index);
-        }
-        return realmId;
-      }
-    }
-        
+            
     throw new RuntimeException("No realm");
   }
   

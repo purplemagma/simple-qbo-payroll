@@ -11,9 +11,6 @@ public class User
   private String firstName;
   private String lastName;
   private String email;
-  private String oAuthToken;
-  private String oAuthTokenSecret;
-  private String dataSource;
 
   @DynamoDBHashKey(attributeName="userId")
   public String getUserId() {
@@ -39,35 +36,6 @@ public class User
      this.lastName = lastName;
   }
 
-  @DynamoDBAttribute(attributeName="oAuthToken")
-  public String getoAuthToken()
-  {
-     return oAuthToken;
-  }
-    public void setoAuthToken(String oAuthToken)
-  {
-     this.oAuthToken = oAuthToken;
-  }
-  
-  @DynamoDBAttribute(attributeName="oAuthTokenSecret")
-  public String getoAuthTokenSecret()
-  {
-     return oAuthTokenSecret;
-  }
-    public void setoAuthTokenSecret(String oAuthTokenSecret)
-  {
-     this.oAuthTokenSecret = oAuthTokenSecret;
-  }
-  
-  @DynamoDBAttribute(attributeName="dataSource")
-  public String getDataSource()
-  {
-    return dataSource;
-  }
-  public void setDataSource(String dataSource)
-  {
-    this.dataSource = dataSource;
-  }
   @DynamoDBAttribute(attributeName="email")
   public String getEmail() {
    return email;
