@@ -6,6 +6,7 @@ import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.Customer;
 import com.intuit.ipp.data.Employee;
 import com.intuit.ipp.data.IntuitEntity;
+import com.intuit.ipp.data.Vendor;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.security.OAuthAuthorizer;
 import com.intuit.ipp.services.DataService;
@@ -95,23 +96,16 @@ public class IntuitService
     return service.findAll(new Customer());
   }
   
-  public int getNumberOfCustomers() throws FMSException {
-    DataService service = new DataService(getContext());
-    QueryResult result = service.executeQuery("SELECT COUNT(*) FROM Customer");
-    return result.getTotalCount();
-  }
-  
-  public int getNumberOfCustomersWithEmails() throws FMSException {
-    DataService service = new DataService(getContext());
-    QueryResult result = service.executeQuery("SELECT COUNT(*) FROM Customer");
-    return result.getTotalCount();
-  }
-
   public List<Employee> getEmployees() throws FMSException {
     DataService service = new DataService( getContext());
     return service.findAll(new Employee());    
   }
   
+  public List<Vendor> getVendors() throws FMSException {
+    DataService service = new DataService( getContext());
+    return service.findAll(new Vendor());    
+  }
+
   @Path("doQuery")
   @GET
   @Produces("application/json")
