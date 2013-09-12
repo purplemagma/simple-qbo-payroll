@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/utils.js"><jsp:text/></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        $('#createsTableButton').click(restCall.curry('database/createTables'));
+        $('#createTableButton').click(restCall.curry('database/createTables'));
         $('#deleteTablesButton').click(restCall.curry('database/deleteTables'));
         $('#checkTablesButton').click(restCall.curry('database/checkTables'));
       });

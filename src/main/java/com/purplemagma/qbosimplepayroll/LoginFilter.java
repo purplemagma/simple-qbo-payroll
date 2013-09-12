@@ -20,7 +20,7 @@ public class LoginFilter implements Filter
     if (requestHttp.getSession().getAttribute("userId") == null) {
       throw new ServletException("Unauthorized");
     }
-    chain.doFilter(request,response);                               
+    chain.doFilter(request,response);
   } 
 
   public void init(final FilterConfig filterConfig) {               

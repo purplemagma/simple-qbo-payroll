@@ -17,13 +17,18 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <filter-mapping> 
     <filter-name>loginFilter</filter-name>
     <url-pattern>/in/*</url-pattern> 
+    <url-pattern>/rest/in/*</url-pattern> 
   </filter-mapping> 
   <servlet>
     <servlet-name>jersey-serlvet</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
-      <param-name>jersey.config.server.provider.packages</param-name>
-      <param-value>com.purplemagma.qbosimplepayroll</param-value>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.purplemagma.qbosimplepayroll.Application</param-value>
+    </init-param>
+    <init-param>
+      <param-name>javax.json.stream.JsonGenerator.prettyPrinting</param-name>
+      <param-value>true</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>

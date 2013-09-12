@@ -80,18 +80,18 @@ public class Authentication
         return realmId;
       }
     }
-
-    realmId = request.getParameter("openid.alias3.value.alias4");
-    
-    if (realmId != null && realmId.length() > 0 && !realmId.equals("1")) {
-      return realmId;
-    }
     
     realmId = request.getParameter("realmId");
     if (realmId != null && realmId.length() > 0) {
       return realmId;
     }
             
+    realmId = request.getParameter("openid.alias3.value.alias4");
+    
+    if (realmId != null && realmId.length() > 0 && !realmId.equals("1")) {
+      return realmId;
+    }
+
     throw new RuntimeException("No realm");
   }
   
