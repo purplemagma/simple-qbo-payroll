@@ -51,6 +51,10 @@ public class PayrollService
     return mapper.load(Company.class, realmId, new DynamoDBMapperConfig(DynamoDBMapperConfig.ConsistentReads.CONSISTENT));
   }
   
+  public boolean realmExists(String realmId) throws IOException {
+    return findRealm(realmId) != null;
+  }
+  
   public Company findOrCreateRealm(String realmId, boolean logIn) throws IOException {
     if (realmId == null) {
       throw new RuntimeException("No realm");

@@ -5,6 +5,7 @@ import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthProvider;
 
+import org.apache.log4j.Logger;
 import org.openid4java.association.AssociationSessionType;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.InMemoryConsumerAssociationStore;
@@ -46,20 +47,28 @@ public class Authentication
   @Path("openid/initialize")
   @GET
   public Response initialize() {
-    try {      
-      String intuitOpenIdUrl = Config.getProperty("openid_provider_url");
-      DiscoveryInformation discovered = new DiscoveryInformation(new URL(intuitOpenIdUrl));
-      List<DiscoveryInformation> discoveries = new ArrayList<DiscoveryInformation>();
-      discoveries.add(discovered);
-      manager.associate(discoveries);
-      AuthRequest authRequest = manager.authenticate(discovered, Config.getProperty("openid_return_url"));
-      FetchRequest fetch = FetchRequest.createFetchRequest();
-      fetch.addAttribute("FirstName", "http://openid.net/schema/namePerson/first", true);
-			fetch.addAttribute("LastName", "http://openid.net/schema/namePerson/last", true);
-			fetch.addAttribute("Email", "http://openid.net/schema/contact/email", true);
-			fetch.addAttribute("RealmId", "http://openid.net/schema/intuit/realmId", true);
-      authRequest.addExtension(fetch);
-      URI uri = new URI(authRequest.getDestinationUrl(true));
+    try {
+      String realmId = getRealmIdFromRequest();
+      PayrollService service = new PayrollService();
+      URI uri = null;
+      
+      if (service.realmExists(realmId) || request.getParameter("noRedirect") != null) {
+        String intuitOpenIdUrl = Config.getProperty("openid_provider_url");
+        DiscoveryInformation discovered = new DiscoveryInformation(new URL(intuitOpenIdUrl));
+        List<DiscoveryInformation> discoveries = new ArrayList<DiscoveryInformation>();
+        discoveries.add(discovered);
+        manager.associate(discoveries);
+        AuthRequest authRequest = manager.authenticate(discovered, Config.getProperty("openid_return_url"));
+        FetchRequest fetch = FetchRequest.createFetchRequest();
+        fetch.addAttribute("FirstName", "http://openid.net/schema/namePerson/first", true);
+  			fetch.addAttribute("LastName", "http://openid.net/schema/namePerson/last", true);
+  			fetch.addAttribute("Email", "http://openid.net/schema/contact/email", true);
+  			fetch.addAttribute("RealmId", "http://openid.net/schema/intuit/realmId", true);
+        authRequest.addExtension(fetch);
+        uri = new URI(authRequest.getDestinationUrl(true));        
+      } else {
+        uri = new URI("/splash.jspx?realmId="+realmId);
+      }
 
       return Response.temporaryRedirect(uri).build();
     } catch (Exception ex) {
