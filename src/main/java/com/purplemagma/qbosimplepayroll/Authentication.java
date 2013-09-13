@@ -115,7 +115,11 @@ public class Authentication
         request.getParameter("openid.alias3.value.alias2"),
         request.getParameter("openid.alias3.value.alias3"));
             
-      return Response.temporaryRedirect(new URI(redirectUrl)).build();
+      if (payroll.getHasValidOAuthConsumer()) {
+        return Response.temporaryRedirect(new URI(redirectUrl)).build();
+      } else {
+        return this.requestToken();
+      }
     } catch (Exception ex) {
       return Response.serverError().entity(ex.toString()).build();      
     }

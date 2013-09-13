@@ -14,45 +14,28 @@
     <script type="text/javascript" src="/js/json2.js"><jsp:text/></script>
   </head>
   <body bgcolor="white">
-    <script type="text/javascript">
-      intuit.ipp.anywhere.setup({
-        grantUrl: '${appconfig.grantUrl}'
-      });
-    </script>
-    <c:choose>
-        <c:when test="${not payrollService.hasValidOAuthConsumer}">
-            <script type="text/javascript">
-              $(document).ready(function() {
-                  intuit.ipp.anywhere.directConnectToIntuit();
-              });      
-            </script>
-            Redirecting to get oAuth tokens.
-        </c:when>
-        <c:otherwise>
-            <script type="text/javascript">
-<![CDATA[
-              function doQuery() {
-                  query = $("#sql").val();
-                  url = "/rest/in/doQuery?maxRows=30&query="+encodeURIComponent(query);
-                  $("#sqlResult").val('Running...')
-                  $.get(url, function(data) {
-                      $("#sqlResult").val(JSON.stringify(data));
-                  }).fail(function(data) {
-                      $("#sqlResult").val(data.responseText);
-                    });
-              }
-              $(document).ready(function() {
-                $("#sqlSubmit").click(doQuery);
-              });      
-]]>
-           </script>
-           <h3>Hello, world! Simple Payroll.</h3>
-           Company Id: ${payrollService.company.realmId}<br/>
-           Business Name: ${payrollService.company.businessName}<br/>
-           Custom query:<br/><textarea id="sql" cols="80" rows="10"><jsp:text/></textarea>
-           <button type="submit" id="sqlSubmit">Submit SQL</button><br/>
-           Result: <br/><textarea id="sqlResult" disabled="true" cols="80" rows="20"><jsp:text/></textarea><br/>
-        </c:otherwise>
-    </c:choose>
+      <script type="text/javascript">
+      <![CDATA[
+        function doQuery() {
+          query = $("#sql").val();
+          url = "/rest/in/doQuery?maxRows=30&query="+encodeURIComponent(query);
+          $("#sqlResult").val('Running...')
+          $.get(url, function(data) {
+            $("#sqlResult").val(JSON.stringify(data));
+          }).fail(function(data) {
+            $("#sqlResult").val(data.responseText);
+          });
+          }
+          $(document).ready(function() {
+            $("#sqlSubmit").click(doQuery);
+          });      
+      ]]>
+      </script>
+      <h3>Hello, world! Simple Payroll.</h3>
+      Company Id: ${payrollService.company.realmId}<br/>
+      Business Name: ${payrollService.company.businessName}<br/>
+      Custom query:<br/><textarea id="sql" cols="80" rows="10"><jsp:text/></textarea>
+      <button type="submit" id="sqlSubmit">Submit SQL</button><br/>
+      Result: <br/><textarea id="sqlResult" disabled="true" cols="80" rows="20"><jsp:text/></textarea><br/>
   </body>
 </html>
