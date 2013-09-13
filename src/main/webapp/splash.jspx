@@ -9,7 +9,9 @@
     <script type="text/javascript">
       <![CDATA[
       $(document).ready(function() {
-        $('#signUp').click(window.location = "/rest/auth/openid/initialize?noRedirect=true&realmId=${param.realmId}");
+        $('#signUp').click(function() {
+          window.location = "/rest/auth/openid/initialize?noRedirect=true&realmId=${param.realmId}"
+        });
       });
       ]]>
     </script>
