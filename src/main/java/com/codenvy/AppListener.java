@@ -15,7 +15,7 @@ public class AppListener implements ServletContextListener
   private final static String PROXY_UPDATE_URL = ".purplemagma.com/update_url/";
     
   public static void updateProxyUrl(String appName) {
-    try {
+    try {      
       String appInstance = System.getenv(VMC_APP_INSTANCE);
       JSONObject appInstanceObj = new JSONObject(appInstance);
       String appUrl = appInstanceObj.getJSONArray("uris").getString(0);

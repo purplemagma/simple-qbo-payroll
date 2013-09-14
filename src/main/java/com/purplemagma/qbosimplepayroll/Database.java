@@ -18,6 +18,8 @@ import com.purplemagma.qbosimplepayroll.Database;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -100,12 +102,20 @@ public class Database
 
   @Path("checkTables")
   @GET
-  public String checkTables() {
+  public String checkTables() {    
     StringBuilder builder = new StringBuilder();
     builder.append(checkOneTable("qbo_simple_payroll_company"));
     builder.append("<br/>");
     builder.append(checkOneTable("qbo_simple_payroll_user"));
     builder.append("<br/>");
+    
+    Map<String,String> map = System.getenv();
+    for (Entry<String,String> item : map.entrySet()) {
+      builder.append(item.getKey());
+      builder.append(":");
+      builder.append(item.getValue());
+      builder.append("<br/>");
+    }
     
     return builder.toString();
   }  
