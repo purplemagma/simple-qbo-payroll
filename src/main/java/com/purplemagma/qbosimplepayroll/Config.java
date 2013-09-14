@@ -10,7 +10,7 @@ public class Config
   static {
     intuitAnywhereProperties = new Properties();
     try {
-      intuitAnywhereProperties.load(Config.class.getResourceAsStream("/ia.properties"));
+      intuitAnywhereProperties.load(Config.class.getResourceAsStream("/app.properties"));
    } catch (IOException e) {
    }
   }

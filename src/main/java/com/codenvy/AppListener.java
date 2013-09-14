@@ -11,12 +11,12 @@ import javax.servlet.ServletContextListener;
 
 public class AppListener implements ServletContextListener
 {
-  private final static String VMC_APP_INSTANCE = "VMC_APP_INSTANCE";
-  private final static String PROXY_UPDATE_URL = ".purplemagma.com/update_url/";
+  private final static String VCAP_APPLICATION = "VCAP_APPLICATION";
+  private final static String PROXY_UPDATE_URL = ".codenvy.purplemagma.com/update_url/";
     
   public static void updateProxyUrl(String appName) {
     try {      
-      String appInstance = System.getenv(VMC_APP_INSTANCE);
+      String appInstance = System.getenv(VCAP_APPLICATION);
       JSONObject appInstanceObj = new JSONObject(appInstance);
       String appUrl = appInstanceObj.getJSONArray("uris").getString(0);
       HttpClient httpClient = new DefaultHttpClient();

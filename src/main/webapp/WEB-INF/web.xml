@@ -5,7 +5,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <context-param>
     <description>Prefix on hostname used for reverse proxy</description>
     <param-name>reverseProxyPrefix</param-name>
-    <param-value>payroll</param-value>
+    <param-value>jefferyharlowbrewer.payroll</param-value>
   </context-param>
   <listener>
     <listener-class>com.codenvy.AppListener</listener-class>

@@ -108,15 +108,7 @@ public class Database
     builder.append("<br/>");
     builder.append(checkOneTable("qbo_simple_payroll_user"));
     builder.append("<br/>");
-    
-    Map<String,String> map = System.getenv();
-    for (Entry<String,String> item : map.entrySet()) {
-      builder.append(item.getKey());
-      builder.append(":");
-      builder.append(item.getValue());
-      builder.append("<br/>");
-    }
-    
+        
     return builder.toString();
   }  
 }
