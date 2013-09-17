@@ -47,17 +47,25 @@ public class Authentication
   @GET
   public Response initialize() {
     try {
-      String realmId = getRealmIdFromRequest();
+      String realmId = null;
+      try {
+        realmId = getRealmIdFromRequest();
+      } catch (Exception ex) {
+      }
       PayrollService service = new PayrollService();
       URI uri = null;
       
-      if (service.realmExists(realmId) || request.getParameter("noRedirect") != null) {
+      if (realmId == null || service.realmExists(realmId) || request.getParameter("noRedirect") != null) {
         String intuitOpenIdUrl = Config.getProperty("openid_provider_url");
         DiscoveryInformation discovered = new DiscoveryInformation(new URL(intuitOpenIdUrl));
         List<DiscoveryInformation> discoveries = new ArrayList<DiscoveryInformation>();
         discoveries.add(discovered);
         manager.associate(discoveries);
-        AuthRequest authRequest = manager.authenticate(discovered, Config.getProperty("openid_return_url"));
+        String oAuthReturnUrl = Config.getProperty("openid_return_url");
+        if (request.getParameter("noRedirect") != null) {
+          oAuthReturnUrl += "?noRedirect=true";
+        }
+        AuthRequest authRequest = manager.authenticate(discovered, oAuthReturnUrl);
         FetchRequest fetch = FetchRequest.createFetchRequest();
         fetch.addAttribute("FirstName", "http://openid.net/schema/namePerson/first", true);
   			fetch.addAttribute("LastName", "http://openid.net/schema/namePerson/last", true);
@@ -118,15 +126,20 @@ public class Authentication
       
       PayrollService payroll = new PayrollService(request);
       String realmId = getRealmIdFromRequest();
-      String redirectUrl = payroll.login(realmId, verified.getIdentifier(),
-        request.getParameter("openid.alias3.value.alias1"),
-        request.getParameter("openid.alias3.value.alias2"),
-        request.getParameter("openid.alias3.value.alias3"));
-            
-      if (payroll.getHasValidOAuthConsumer()) {
-        return Response.temporaryRedirect(new URI(redirectUrl)).build();
+      
+      if (payroll.realmExists(realmId) || openidResp.hasParameter("noRedirect")) {
+        String redirectUrl = payroll.login(realmId, verified.getIdentifier(),
+          request.getParameter("openid.alias3.value.alias1"),
+          request.getParameter("openid.alias3.value.alias2"),
+          request.getParameter("openid.alias3.value.alias3"));
+              
+        if (payroll.getHasValidOAuthConsumer()) {
+          return Response.temporaryRedirect(new URI(redirectUrl)).build();
+        } else {
+          return this.requestToken();
+        }
       } else {
-        return this.requestToken();
+        return Response.temporaryRedirect(new URI("/splash.jspx?realmId="+realmId)).build();
       }
     } catch (Exception ex) {
       return Response.serverError().entity(ex.toString()).build();      
@@ -137,8 +150,9 @@ public class Authentication
   @GET
 	public Response requestToken() {
     try {
-      OAuthProvider provider = new DefaultOAuthProvider(Config.getProperty("request_token_url"),
-        Config.getProperty("access_token_url"),Config.getProperty("authorize_url"));
+      String requestUrl = Config.getProperty("request_token_url");
+      String authorizeUrl = Config.getProperty("authorize_url");
+      OAuthProvider provider = new DefaultOAuthProvider(requestUrl, Config.getProperty("access_token_url"),authorizeUrl);
 
       OAuthConsumer consumer = new DefaultOAuthConsumer(Config.getProperty("oauth_consumer_key"), Config.getProperty("oauth_consumer_secret"));
    

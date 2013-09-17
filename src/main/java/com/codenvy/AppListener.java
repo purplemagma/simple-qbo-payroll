@@ -17,11 +17,14 @@ public class AppListener implements ServletContextListener
   public static void updateProxyUrl(String appName) {
     try {      
       String appInstance = System.getenv(VCAP_APPLICATION);
-      JSONObject appInstanceObj = new JSONObject(appInstance);
-      String appUrl = appInstanceObj.getJSONArray("uris").getString(0);
-      HttpClient httpClient = new DefaultHttpClient();
-      HttpGet httpGet = new HttpGet("http://"+appName+PROXY_UPDATE_URL+appUrl);
-      httpClient.execute(httpGet);
+      
+      if (appInstance != null) {
+        JSONObject appInstanceObj = new JSONObject(appInstance);
+        String appUrl = appInstanceObj.getJSONArray("uris").getString(0);
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://"+appName+PROXY_UPDATE_URL+appUrl);
+        httpClient.execute(httpGet);
+      }
     } catch (Exception ex) {
     }
   }
