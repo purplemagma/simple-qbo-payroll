@@ -52,29 +52,34 @@ public class Authentication
         realmId = getRealmIdFromRequest();
       } catch (Exception ex) {
       }
-      PayrollService service = new PayrollService();
+      PayrollService service = new PayrollService(request);
       URI uri = null;
       
-      if (realmId == null || service.realmExists(realmId) || request.getParameter("noRedirect") != null) {
-        String intuitOpenIdUrl = Config.getProperty("openid_provider_url");
-        DiscoveryInformation discovered = new DiscoveryInformation(new URL(intuitOpenIdUrl));
-        List<DiscoveryInformation> discoveries = new ArrayList<DiscoveryInformation>();
-        discoveries.add(discovered);
-        manager.associate(discoveries);
-        String oAuthReturnUrl = Config.getProperty("openid_return_url");
-        if (request.getParameter("noRedirect") != null) {
-          oAuthReturnUrl += "?noRedirect=true";
+      String homePage = service.realmLoggedIn(realmId);
+      if (homePage == null) {
+        if (realmId == null || service.realmExists(realmId) || request.getParameter("noRedirect") != null) {
+          String intuitOpenIdUrl = Config.getProperty("openid_provider_url");
+          DiscoveryInformation discovered = new DiscoveryInformation(new URL(intuitOpenIdUrl));
+          List<DiscoveryInformation> discoveries = new ArrayList<DiscoveryInformation>();
+          discoveries.add(discovered);
+          manager.associate(discoveries);
+          String oAuthReturnUrl = Config.getProperty("openid_return_url");
+          if (request.getParameter("noRedirect") != null) {
+            oAuthReturnUrl += "?noRedirect=true";
+          }
+          AuthRequest authRequest = manager.authenticate(discovered, oAuthReturnUrl);
+          FetchRequest fetch = FetchRequest.createFetchRequest();
+          fetch.addAttribute("FirstName", "http://openid.net/schema/namePerson/first", true);
+    			fetch.addAttribute("LastName", "http://openid.net/schema/namePerson/last", true);
+    			fetch.addAttribute("Email", "http://openid.net/schema/contact/email", true);
+    			fetch.addAttribute("RealmId", "http://openid.net/schema/intuit/realmId", true);
+          authRequest.addExtension(fetch);
+          uri = new URI(authRequest.getDestinationUrl(true));        
+        } else {
+          uri = new URI("/splash.jspx?realmId="+realmId);
         }
-        AuthRequest authRequest = manager.authenticate(discovered, oAuthReturnUrl);
-        FetchRequest fetch = FetchRequest.createFetchRequest();
-        fetch.addAttribute("FirstName", "http://openid.net/schema/namePerson/first", true);
-  			fetch.addAttribute("LastName", "http://openid.net/schema/namePerson/last", true);
-  			fetch.addAttribute("Email", "http://openid.net/schema/contact/email", true);
-  			fetch.addAttribute("RealmId", "http://openid.net/schema/intuit/realmId", true);
-        authRequest.addExtension(fetch);
-        uri = new URI(authRequest.getDestinationUrl(true));        
       } else {
-        uri = new URI("/splash.jspx?realmId="+realmId);
+        uri = new URI(homePage);
       }
 
       return Response.temporaryRedirect(uri).build();
@@ -85,6 +90,7 @@ public class Authentication
   
   private String getRealmIdFromRequest() {
     String realmId = request.getHeader("Referer");
+    realmId = realmId.replaceAll("%3D", "=");
     if (realmId != null && realmId.length() > 8) {
       int index = realmId.indexOf("realmId=");
       if (index >= 0) {

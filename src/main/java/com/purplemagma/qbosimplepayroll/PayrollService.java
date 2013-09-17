@@ -84,6 +84,12 @@ public class PayrollService
     return  (String) request.getSession().getAttribute("realmId");
   }
   
+  public String realmLoggedIn(String realmId) {
+    String loggedInRealmId = getRealmId();
+    
+    return !getHasValidOAuthConsumer() || loggedInRealmId == null || realmId == null || !loggedInRealmId.equals(realmId) ? null : "/in/start.jspx";
+  }
+  
   public User findUser(String userId) throws IOException {
     if (userId == null) {
       return null;
