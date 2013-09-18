@@ -18,16 +18,4 @@ public class Config
   public static String getProperty(String name) {
     return intuitAnywhereProperties.getProperty(name);
   }
-  
-  public String getGrantUrl() {
-    return Config.getProperty("oauth_request_url");
-  }
-  
-  public String getMenuProxy() {
-    return Config.getProperty("app_url");    
-  }
-  
-  public String getIntuitAnywhereJsUrl() {
-    return Config.getProperty("ia_js_url");
-  }
 }
