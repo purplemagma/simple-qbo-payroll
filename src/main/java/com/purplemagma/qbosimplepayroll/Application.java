@@ -13,7 +13,7 @@ public class Application extends ResourceConfig
         register(JsonMoxyConfigurationContextResolver.class);
         
         Authentication.Configure(
-          Config.getProperty("base_app_url"), 
+          "https://"+com.codenvy.AppListener.getProxyHost(), 
           Config.getProperty("openid_provider_url"),
           Config.getProperty("authorize_url"),
           Config.getProperty("request_token_url"), 

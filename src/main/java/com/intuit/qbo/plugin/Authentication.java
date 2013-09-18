@@ -82,7 +82,10 @@ public class Authentication
   public static String getoAuthConsumerSecret() {
     return oAuthConsumerSecret;
   }
-
+  
+  /*
+   * Dynamically constructs a QBO plugin instance using the cass name you passed into configure
+   */
   private QBOPlugin getPluginInstance() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
     QBOPlugin plugin = (QBOPlugin) Class.forName(pluginClassName).newInstance();
     plugin.setSession(request.getSession());
@@ -277,5 +280,15 @@ public class Authentication
     } catch (Exception ex) {
       return Response.serverError().entity(ex.toString()).build();      
     }    
-	}  
+	}
+ 
+  /*
+   * Logout
+   */
+   @Path("logout")
+   @GET
+   public Response logout() {
+     request.getSession().invalidate();
+     return Response.serverError().entity("You are logged out.").build();      
+   }
 }
