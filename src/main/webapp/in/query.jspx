@@ -10,18 +10,29 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
     <script type="text/javascript" src="/js/utils.js"><jsp:text/></script>
     <script type="text/javascript" src="/js/json2.js"><jsp:text/></script>
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>  </head>
+  </head>
   <body bgcolor="white">
       <script type="text/javascript">
       <![CDATA[
+        function doQuery() {
+          query = $("#sql").val();
+          url = "/rest/in/doQuery?maxRows=30&query="+encodeURIComponent(query);
+          $("#sqlResult").val('Running...')
+          $.get(url, function(data) {
+            $("#sqlResult").val(JSON.stringify(data));
+          }).fail(function(data) {
+            $("#sqlResult").val(data.responseText);
+          });
+          }
           $(document).ready(function() {
-            $('#employeelist').dataTable();
-            //$("#payday").click(alert('yo'));
+            $("#sqlSubmit").click(doQuery);
           });      
       ]]>
       </script>
-      <h3>Welcome to the QBO Plugin Sample</h3>
-      <div id="employeelist"></div>
+      Company Id: ${payrollService.company.realmId}<br/>
+      Business Name: ${payrollService.company.businessName}<br/>
+      Custom query:<br/><textarea id="sql" cols="80" rows="10"><jsp:text/></textarea>
+      <button type="submit" id="sqlSubmit">Submit SQL</button><br/>
+      Result: <br/><textarea id="sqlResult" disabled="true" cols="80" rows="20"><jsp:text/></textarea><br/>
   </body>
 </html>
