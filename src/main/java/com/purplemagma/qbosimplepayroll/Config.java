@@ -27,21 +27,21 @@ public class Config
   }
   
   public static String getBaseUrl() {
-	  return System.getenv("baseUrl") == null ?
+	  return System.getProperty("baseUrl") == null ?
       		"https://"+com.codenvy.AppListener.getProxyHost() :
-      		System.getenv("baseUrl");	  
+      			System.getProperty("baseUrl");	  
   }
   
   public static String getOAuthConsumerKey() {
-	  return System.getenv("oAuthConsumerKey") == null ? Config.getProperty("oauth_consumer_key") :
-		  System.getenv("oAuthConsumerKey");
+	  return System.getProperty("oAuthConsumerKey") == null ? Config.getProperty("oauth_consumer_key") :
+		  System.getProperty("oAuthConsumerKey");
   }
   public static String getOAuthConsumerSecret() {
-	  return System.getenv("oAuthConsumerSecret") == null ? Config.getProperty("oauth_consumer_secret") :
-		  System.getenv("oAuthConsumerSecret");
+	  return System.getProperty("oAuthConsumerSecret") == null ? Config.getProperty("oauth_consumer_secret") :
+		  System.getProperty("oAuthConsumerSecret");
   }
   public static String getAppToken() {
-	  return System.getenv("appToken") == null ? Config.getProperty("oauth_consumer_key") :
-		  System.getenv("appToken");
+	  return System.getProperty("appToken") == null ? Config.getProperty("oauth_consumer_key") :
+		  System.getProperty("appToken");
   }
 }
