@@ -21,9 +21,9 @@ public class JsonMoxyConfigurationContextResolver implements ContextResolver<Mox
             .setNamespacePrefixMapper(namespacePrefixMapper)
             .setNamespaceSeparator(':');
     }
- 
-    @Override
-    public MoxyJsonConfig getContext(Class<?> objectType) {
-        return config;
-    }
+
+	public MoxyJsonConfig getContext(Class<?> type) {
+		return config;
+	}
+
 } 

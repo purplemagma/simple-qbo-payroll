@@ -18,8 +18,6 @@ import com.purplemagma.qbosimplepayroll.Database;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

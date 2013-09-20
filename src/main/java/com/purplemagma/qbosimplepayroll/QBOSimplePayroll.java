@@ -31,17 +31,14 @@ public class QBOSimplePayroll implements QBOPlugin
     mapper = new DynamoDBMapper(client);    
   }
   
-  @Override
   public void setSession(HttpSession session) {
     this.session = session;
   }
   
-  @Override
   public boolean doesRealmExist(String realmId) throws IOException {
     return findRealm(realmId) != null;
   }
   
-  @Override
   public boolean isRealmLoggedIn(String realmId) {
     String loggedInRealmId = getRealmId();
   
@@ -53,7 +50,6 @@ public class QBOSimplePayroll implements QBOPlugin
     }
   }
 
-  @Override
   public void saveoAuth(String dataSource, OAuthConsumer consumer) throws IOException {
     Company company = getCompany();
     company.setoAuthToken(consumer.getToken());
@@ -64,7 +60,6 @@ public class QBOSimplePayroll implements QBOPlugin
     session.setAttribute("validOAuthConsumer", consumer);    
   }
 
-  @Override
   public boolean getHasValidOAuthConsumer() {
     OAuthConsumer consumer = null;
     try {
@@ -75,17 +70,14 @@ public class QBOSimplePayroll implements QBOPlugin
     return consumer != null;
   }
 
-  @Override
   public String getSignupUrl(String realmId) {
-    return "/splash.jspx?realmId="+realmId;  
+    return session.getServletContext().getContextPath()+"/splash.jsp?realmId="+realmId;  
   }
   
-  @Override
   public String getStartPage() {
-    return "/in/start.jspx";
+    return session.getServletContext().getContextPath()+"/in/start.jsp";
   }
 
-  @Override
   public void login(String realmId, String userId, String firstName, String lastName, String email) throws IOException {
     session.removeAttribute("intuit_service");
     session.removeAttribute("validOAuthConsumer");

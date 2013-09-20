@@ -23,7 +23,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 
 @Path("in")
 public class IntuitService
@@ -106,6 +105,7 @@ public class IntuitService
     return service.findAll(new Vendor());    
   }
 
+  @SuppressWarnings("unchecked")
   @Path("doQuery")
   @GET
   @Produces("application/json")

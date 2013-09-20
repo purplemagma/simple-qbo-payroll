@@ -10,7 +10,7 @@
       <![CDATA[
       $(document).ready(function() {
         $('#signUp').click(function() {
-          window.location = "/rest/auth/openid/initialize?isSigningUp=true&realmId=${param.realmId}"
+          window.location = "rest/auth/openid/initialize?isSigningUp=true&realmId=${param.realmId}";
         });
       });
       ]]>

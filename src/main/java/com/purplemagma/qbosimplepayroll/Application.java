@@ -13,13 +13,13 @@ public class Application extends ResourceConfig
         register(JsonMoxyConfigurationContextResolver.class);
         
         Authentication.Configure(
-          "https://"+com.codenvy.AppListener.getProxyHost(), 
+          Config.getBaseUrl(), 
           Config.getProperty("openid_provider_url"),
           Config.getProperty("authorize_url"),
           Config.getProperty("request_token_url"), 
           Config.getProperty("access_token_url"),
-          Config.getProperty("oauth_consumer_key"),
-          Config.getProperty("oauth_consumer_secret"),
+          Config.getOAuthConsumerKey(),
+          Config.getOAuthConsumerSecret(),
           "com.purplemagma.qbosimplepayroll.QBOSimplePayroll");
    }
 }
