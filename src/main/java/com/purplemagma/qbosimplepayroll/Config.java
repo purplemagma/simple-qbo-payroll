@@ -11,15 +11,8 @@ public class Config
     intuitAnywhereProperties = new Properties();
     try {
       intuitAnywhereProperties.load(Config.class.getResourceAsStream("/app.properties"));
-      
-      if (System.getenv("QBOV3ServiceUrl") != null) {
-	    com.intuit.ipp.util.Config.setProperty(com.intuit.ipp.util.Config.BASE_URL_QBO, System.getenv("QBOV3ServiceUrl"));
-      }
-      if (System.getenv("IPPPlatformServiceUrl") != null) {
-	    com.intuit.ipp.util.Config.setProperty(com.intuit.ipp.util.Config.BASE_URL_PLATFORMSERVICE, System.getenv("IPPPlatformServiceUrl"));
-      }
-   } catch (IOException e) {
-   }
+    } catch (IOException e) {
+    }
   }
 
   public static String getProperty(String name) {
