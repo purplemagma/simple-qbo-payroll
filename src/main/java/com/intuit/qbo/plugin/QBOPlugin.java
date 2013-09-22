@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
 
+import com.intuit.ipp.exception.FMSException;
+
 public interface QBOPlugin
 {
   /*
@@ -27,7 +29,7 @@ public interface QBOPlugin
    * Logins a user in. If realm database record doesn't exist, it should create one
    * It should also create a user record if one doesn't exist.
    */
-  public void login(String realmId, String userId, String firstName, String lastName, String email) throws IOException;
+  public void login(String realmId, String userId, String firstName, String lastName, String email) throws IOException, FMSException;
   
   /*
    * Saves oAuth tokens and token secret with realm. oAuth tokens are realm scoped.

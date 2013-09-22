@@ -1,10 +1,23 @@
 package com.purplemagma.qbosimplepayroll;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+
+import org.glassfish.jersey.process.internal.RequestScoped;
+
 import com.intuit.ipp.core.Context;
 import com.intuit.ipp.core.ServiceType;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.Customer;
-import com.intuit.ipp.data.Employee;
 import com.intuit.ipp.data.IntuitEntity;
 import com.intuit.ipp.data.Vendor;
 import com.intuit.ipp.exception.FMSException;
@@ -12,17 +25,7 @@ import com.intuit.ipp.security.OAuthAuthorizer;
 import com.intuit.ipp.services.DataService;
 import com.intuit.ipp.services.PlatformService;
 import com.intuit.ipp.services.QueryResult;
-import com.purplemagma.qbosimplepayroll.Config;
 import com.purplemagma.qbosimplepayroll.entities.IntuitEntityListAndCount;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 
 @Path("in")
 public class IntuitService
@@ -39,11 +42,12 @@ public class IntuitService
   public IntuitService() {
   }
   
-  public IntuitService(HttpSession session, OAuthAuthorizer authorizer, String dataSource, String realmId) {
+  public IntuitService(HttpSession session, OAuthAuthorizer authorizer, String dataSource, String realmId) throws FMSException {
     this.session = session;
     this.authorizer = authorizer;
     this.dataSource = dataSource == null ? null : ServiceType.valueOf(dataSource);
     this.realmId = realmId;
+    getContext();
   }
   
   public Context getContext() throws FMSException {
@@ -59,7 +63,7 @@ public class IntuitService
       return null;
     }
     
-    context = new Context(this.authorizer, Config.getProperty("appToken"), this.dataSource, this.realmId);
+    context = new Context(this.authorizer, Config.getAppToken(), this.dataSource, this.realmId);
     this.session.setAttribute("ippContext", context);
     
     return context;
@@ -90,18 +94,56 @@ public class IntuitService
     return service.getIDSRealm();
   }
   
+  @Path("customers")
+  @GET
+  @Produces("application/json")
   public List<Customer> getCustomers() throws FMSException {
     DataService service = new DataService(getContext());
     return service.findAll(new Customer());
   }
   
-  public List<Employee> getEmployees() throws FMSException {
-    DataService service = new DataService( getContext());
-    return service.findAll(new Employee());    
+  private int[] parse(String range) {
+	  int[] result = new int[2];
+	  if (range!=null) {
+        String from=range.split("=")[1].split("-")[0];
+        String t=range.split("=")[1].split("-")[1];
+        result[0] = Integer.parseInt(from);
+        result[1] = Integer.parseInt(t);
+	  } else {
+		  result[0] = 0;
+		  result[1] = -1;
+	  }
+	  	  
+	  return result;
   }
   
+  @Path("employees")
+  @GET
+  @Produces("application/json")
+  public List<Customer> getEmployees(@HeaderParam("Range") String rangeString) throws FMSException {
+    DataService service = new DataService(getContext());
+	QueryResult result = service.executeQuery("select * from customer");
+	int []range = parse(rangeString);
+	result.setStartPosition(range[0]);
+	result.setMaxResults(range[1]-range[0]);
+	return (List<Customer>) result.getEntities();
+  }
+  
+  @Path("employees/{id}")
+  @GET
+  @Produces("application/json")
+  public Customer getEmployeeById(@PathParam("id") String id) throws FMSException {
+    DataService service = new DataService(getContext());
+  	Customer employee = new Customer();
+  	employee.setId(id);
+  	return service.findById(employee);
+  }
+  
+  @Path("vendors")
+  @GET
+  @Produces("application/json")
   public List<Vendor> getVendors() throws FMSException {
-    DataService service = new DataService( getContext());
+    DataService service = new DataService(getContext());
     return service.findAll(new Vendor());    
   }
 

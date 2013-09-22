@@ -8,15 +8,15 @@
     <jsp:useBean id="payrollService" class="com.purplemagma.qbosimplepayroll.QBOSimplePayroll"></jsp:useBean>
     <jsp:setProperty name="payrollService" property="session" value="${pageContext.session}"></jsp:setProperty>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
-    <script type="text/javascript" src="/js/utils.js"><jsp:text/></script>
-    <script type="text/javascript" src="/js/json2.js"><jsp:text/></script>
+    <script type="text/javascript" src="../js/utils.js"><jsp:text/></script>
+    <script type="text/javascript" src="../js/json2.js"><jsp:text/></script>
   </head>
   <body bgcolor="white">
       <script type="text/javascript">
       <![CDATA[
         function doQuery() {
           query = $("#sql").val();
-          url = "/rest/in/doQuery?maxRows=30&query="+encodeURIComponent(query);
+          url = "../rest/in/doQuery?maxRows=30&query="+encodeURIComponent(query);
           $("#sqlResult").val('Running...')
           $.get(url, function(data) {
             $("#sqlResult").val(JSON.stringify(data));

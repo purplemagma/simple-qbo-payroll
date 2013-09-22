@@ -7,42 +7,55 @@ xmlns:fn="http://java.sun.com/jsp/jstl/functions" >
     <jsp:directive.page contentType="text/html;charset=UTF-8"></jsp:directive.page> 
     <jsp:useBean id="payrollService" class="com.purplemagma.qbosimplepayroll.QBOSimplePayroll"></jsp:useBean>
     <jsp:setProperty name="payrollService" property="session" value="${pageContext.session}"></jsp:setProperty>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"><jsp:text/></script>
-    <script type="text/javascript" src="/js/utils.js"><jsp:text/></script>
-    <script type="text/javascript" src="/js/json2.js"><jsp:text/></script>
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"><jsp:text/></link>
-    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"><jsp:text/></script>
+	<link rel="stylesheet" type="text/css" href="https://qa.cdn.qbo.intuit.com/c2/v67.084/scripts/dojo/qbo/harmony/harmony.css"><jsp:text /></link>
+	<link rel="stylesheet" type="text/css" href="https://qa.cdn.qbo.intuit.com/c2/v67.084/scripts/dojo/qbo/harmony/svg.css"><jsp:text /></link>
+    <script type="text/javascript" src="../js/utils.js"><jsp:text /></script>
+    <script type="text/javascript" src="../js/json2.js"><jsp:text /></script>
+	<script type="text/javascript" src="../js/dojo/dojo.js"><jsp:text /></script>
   </head>
-  <body bgcolor="white">
-    <script type="text/javascript">
-      <![CDATA[
-        $(document).ready(function() {
-          $('#employeelist').dataTable();
-          //$("#payday").click(alert('yo'));
-        });      
-      ]]>
+  <body class="en-us">
+  	<script type="text/javascript">
+        require([
+            "dojo/_base/declare",
+        	"dgrid/OnDemandGrid",
+        	"dojo/store/JsonRest",
+        	"dgrid/Keyboard",
+        	"dgrid/Selection",
+        	"dgrid/util/mouse",
+        	"dojo/domReady!"], 
+        function(declare, Grid, JsonRest, Keyboard, Selection) {
+        	var CustomGrid = declare([ Grid, Keyboard, Selection ]);
+        	var store = new JsonRest({
+        	    target: "../rest/in/employees",
+        	    idProperty: "Id"
+        	  });
+            var grid = new CustomGrid({
+            	store: store,
+            	columns: [
+            	   {label: "Given Name", field: "GivenName", sortable: false},
+            	   {label: "Family Name", field: "FamilyName"}
+            	],
+                selectionMode: "single",
+                maxRowsPerPage: 500,
+                bufferRows: 500,
+            }, "grid");
+            grid.startup();
+        });
     </script>
-    <h3>Welcome to the QBO Plugin Sample</h3>
-    <table id="employeelist">
-      <thead>
-        <tr>
-          <th>Column 1</th>
-          <th>Column 2</th>
-          <th>etc</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Row 1 Data 1</td>
-          <td>Row 1 Data 2</td>
-          <td>etc</td>
-        </tr>
-        <tr>
-          <td>Row 2 Data 1</td>
-          <td>Row 2 Data 2</td>
-          <td>etc</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="page-content">
+	    <div class="divContent">
+	    	<div>
+				<div class="floatRight">
+	                <div class="topButtonBar">
+	                	<button type="button" class="button">Edit</button>
+	                </div>
+	            </div>
+	        </div>
+			<div class="tallBreakDiv"></div>
+			<div class="listScroller" style="height: 210px;">
+    	       <div id="grid" class="qboDataGrid"></div>
+	    	</div>
+    	</div>
+    </div>
   </body>
 </html>

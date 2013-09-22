@@ -44,7 +44,7 @@ public class QBOSimplePayroll implements QBOPlugin
   
     try {
       return getHasValidOAuthConsumer() && loggedInRealmId != null && realmId != null && loggedInRealmId.equals(realmId)
-        && getCompany() != null;
+        && getCompany() != null && getIntuitService() != null;
     } catch (Exception ex) {
       return false;
     }
@@ -78,8 +78,7 @@ public class QBOSimplePayroll implements QBOPlugin
     return session.getServletContext().getContextPath()+"/in/start.jsp";
   }
 
-  public void login(String realmId, String userId, String firstName, String lastName, String email) throws IOException {
-    session.removeAttribute("intuit_service");
+  public void login(String realmId, String userId, String firstName, String lastName, String email) throws IOException, FMSException {
     session.removeAttribute("validOAuthConsumer");
 
     if (userId == null) {
@@ -90,15 +89,7 @@ public class QBOSimplePayroll implements QBOPlugin
     Company company = this.findOrCreateRealm(realmId, true);
 
     if (this.getHasValidOAuthConsumer()) {
-      String dataSource = company.getDataSource();
-      OAuthAuthorizer authorizer = new OAuthAuthorizer(
-         Authentication.getoAuthConsumerKey(),
-         Authentication.getoAuthConsumerSecret(),
-         company.getoAuthToken(),
-         company.getoAuthTokenSecret());
-      
-      IntuitService is = new IntuitService(session, authorizer, dataSource, realmId);
-  
+      IntuitService is = this.getIntuitService();
       CompanyInfo ippCompany = null;    
       try {
         ippCompany = is.getCompany();
@@ -114,7 +105,6 @@ public class QBOSimplePayroll implements QBOPlugin
       if (ippCompany != null) {
         company.setBusinessName(ippCompany.getCompanyName());
         this.mapper.save(company, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
-        session.setAttribute("intuit_service", is);
       }
     }
   }
@@ -190,8 +180,19 @@ public class QBOSimplePayroll implements QBOPlugin
     return (String) session.getAttribute("userId");
   }
     
-  public IntuitService getIntuitService() {
-    return (IntuitService) session.getAttribute("intuit_service");
+  public IntuitService getIntuitService() throws IOException, FMSException {
+    if (this.getHasValidOAuthConsumer()) {
+        String dataSource = getCompany().getDataSource();
+        OAuthAuthorizer authorizer = new OAuthAuthorizer(
+           Authentication.getoAuthConsumerKey(),
+           Authentication.getoAuthConsumerSecret(),
+           getCompany().getoAuthToken(),
+           getCompany().getoAuthTokenSecret());
+        
+        return new IntuitService(this.session, authorizer, dataSource, getRealmId());
+    } else {
+    	return null;
+    }
   }
     
   public OAuthConsumer getValidOAuthConsumer() throws IOException {

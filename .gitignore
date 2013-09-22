@@ -5,3 +5,5 @@
 *.war
 *.ear
 /target
+.DS_Store
+.settings
