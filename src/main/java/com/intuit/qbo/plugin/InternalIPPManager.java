@@ -61,7 +61,6 @@ public class InternalIPPManager {
     public final static String AUTOGRANT_URL = "https://appcenter-stage.intuit.com/Account/AutoGrant?oauth_token=";
         
     // // use your app's values
-    public final static String APPID = "b7n43554xm"; 
     public final static String APP_TOKEN = "fafc3d53bf9e9b4da8ba462bddc91919c357";
     public final static String CONSUMER_KEY = "qye2eJkmmgFZAmWa1N84NHq7rdrXAQ";
     public final static String CONSUMER_SECRET = "QHiP738SgdtCDucsdId3bfMID1gZ9rkyqRHUJ63O";

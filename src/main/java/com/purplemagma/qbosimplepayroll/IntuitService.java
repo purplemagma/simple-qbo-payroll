@@ -116,32 +116,7 @@ public class IntuitService
     DataService service = new DataService(getContext());
     return service.findAll(new Customer());
   }
-  
-  private int[] parse(String range) {
-	  int[] result = new int[2];
-	  if (range!=null) {
-        String from=range.split("=")[1].split("-")[0];
-        String t=range.split("=")[1].split("-")[1];
-        result[0] = Integer.parseInt(from);
-        result[1] = Integer.parseInt(t);
-	  } else {
-		  result[0] = 0;
-		  result[1] = -1;
-	  }
-	  	  
-	  return result;
-  }
-  
-  public PlatformSessionContext getV2PlatformSessionContext() {
-	  OAuthConsumer consumer = getIntuitServiceSessionState().consumer;
-	  OAuthCredentials credentials = new OAuthCredentials(consumer.getConsumerKey(), consumer.getConsumerSecret(), consumer.getToken(), consumer.getTokenSecret());
-	  PlatformSessionContext psc = new PlatformSessionContext(credentials, Config.getAppToken());
-	  psc.setPlatformServiceType(PlatformServiceType.QBO);
-	  psc.setRealmID(getIntuitServiceSessionState().realmId);
-	  
-	  return psc;
-  }
-  
+      
   /*
    * Since V3 Employee doesn't work quite yet, we need to use V2
    */
@@ -151,7 +126,7 @@ public class IntuitService
   public String getEmployees(@HeaderParam("Range") String rangeString) throws Exception {
 	  PlatformSessionContext psc = getV2PlatformSessionContext();
 	  QBEmployeeService employeeService = QBServiceFactory.getService(psc, QBEmployeeService.class);
-	  int[] range = this.parse(rangeString);
+	  int[] range = this.parseRange(rangeString);
 	  List<QBEmployee> employees = employeeService.findAll(psc, range[0]+1, range[1]-range[0]);
 	  
 	  JSONArray result = new JSONArray(employees);
@@ -200,5 +175,30 @@ public class IntuitService
     returnValue.setCount(result.getTotalCount());
 
     return returnValue;
+  }
+
+  private int[] parseRange(String range) {
+	  int[] result = new int[2];
+	  if (range!=null) {
+        String from=range.split("=")[1].split("-")[0];
+        String t=range.split("=")[1].split("-")[1];
+        result[0] = Integer.parseInt(from);
+        result[1] = Integer.parseInt(t);
+	  } else {
+		  result[0] = 0;
+		  result[1] = -1;
+	  }
+	  	  
+	  return result;
+  }
+  
+  private PlatformSessionContext getV2PlatformSessionContext() {
+	  OAuthConsumer consumer = getIntuitServiceSessionState().consumer;
+	  OAuthCredentials credentials = new OAuthCredentials(consumer.getConsumerKey(), consumer.getConsumerSecret(), consumer.getToken(), consumer.getTokenSecret());
+	  PlatformSessionContext psc = new PlatformSessionContext(credentials, Config.getAppToken());
+	  psc.setPlatformServiceType(PlatformServiceType.QBO);
+	  psc.setRealmID(getIntuitServiceSessionState().realmId);
+	  
+	  return psc;
   }
 }
