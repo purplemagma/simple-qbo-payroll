@@ -13,8 +13,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.Error;
 import com.intuit.ipp.exception.FMSException;
-import com.intuit.ipp.security.OAuthAuthorizer;
-import com.intuit.qbo.plugin.Authentication;
 import com.intuit.qbo.plugin.QBOPlugin;
 import com.purplemagma.qbosimplepayroll.entities.Company;
 import com.purplemagma.qbosimplepayroll.entities.User;
@@ -183,13 +181,8 @@ public class QBOSimplePayroll implements QBOPlugin
   public IntuitService getIntuitService() throws IOException, FMSException {
     if (this.getHasValidOAuthConsumer()) {
         String dataSource = getCompany().getDataSource();
-        OAuthAuthorizer authorizer = new OAuthAuthorizer(
-           Authentication.getoAuthConsumerKey(),
-           Authentication.getoAuthConsumerSecret(),
-           getCompany().getoAuthToken(),
-           getCompany().getoAuthTokenSecret());
         
-        return new IntuitService(this.session, authorizer, dataSource, getRealmId());
+        return new IntuitService(this.session, getValidOAuthConsumer(), dataSource, getRealmId());
     } else {
     	return null;
     }
@@ -200,8 +193,7 @@ public class QBOSimplePayroll implements QBOPlugin
     if (consumer == null) {
       Company company = getCompany();
       if (company != null && company.getoAuthToken() != null && company.getoAuthTokenSecret() != null) {
-        consumer = new DefaultOAuthConsumer(Config.getProperty("oauth_consumer_key"),
-          Config.getProperty("oauth_consumer_secret"));
+        consumer = new DefaultOAuthConsumer(Config.getOAuthConsumerKey(), Config.getOAuthConsumerSecret());
         consumer.setTokenWithSecret(company.getoAuthToken(), company.getoAuthTokenSecret());
         session.setAttribute("validOAuthConsumer", consumer);
       }

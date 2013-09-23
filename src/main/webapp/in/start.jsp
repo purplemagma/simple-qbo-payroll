@@ -32,8 +32,8 @@ xmlns:fn="http://java.sun.com/jsp/jstl/functions" >
             var grid = new CustomGrid({
             	store: store,
             	columns: [
-            	   {label: "Given Name", field: "GivenName", sortable: false},
-            	   {label: "Family Name", field: "FamilyName"}
+            	   {label: "Given Name", field: "givenName", sortable: false},
+            	   {label: "Family Name", field: "familyName"}
             	],
                 selectionMode: "single",
                 maxRowsPerPage: 500,
