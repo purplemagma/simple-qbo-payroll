@@ -1,5 +1,6 @@
 package com.purplemagma.qbosimplepayroll;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -11,6 +12,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import org.apache.log4j.Logger;
 
 import oauth.signpost.OAuthConsumer;
 
@@ -65,9 +68,10 @@ public class IntuitService
     state.consumer = consumer;
     state.context = new Context(state.authorizer, Config.getAppToken(), state.dataSource, state.realmId);
     
+    // Set up properties for V2
     Properties props = new Properties();
-    props.setProperty("workplace.server", "https://appcenter-stage.intuit.com");
-    props.setProperty("qbo.server", "https://qa.qbo.intuit.com/qbo2/rest/");
+    props.setProperty("workplace.server", com.intuit.ipp.util.Config.getProperty(com.intuit.ipp.util.Config.BASE_URL_PLATFORMSERVICE));
+    props.setProperty("qbo.server", com.intuit.ipp.util.Config.getProperty(com.intuit.ipp.util.Config.BASE_URL_QBO).replaceAll("v3/company", "rest/"));
     com.intuit.platform.util.Config.configure(props);
     getSession().setAttribute("isSessionState", state);
   }
@@ -127,7 +131,12 @@ public class IntuitService
 	  PlatformSessionContext psc = getV2PlatformSessionContext();
 	  QBEmployeeService employeeService = QBServiceFactory.getService(psc, QBEmployeeService.class);
 	  int[] range = this.parseRange(rangeString);
-	  List<QBEmployee> employees = employeeService.findAll(psc, range[0]+1, range[1]-range[0]);
+	  List<QBEmployee> employees = new ArrayList<QBEmployee>();
+	  try {
+		  employees = employeeService.findAll(psc, range[0]+1, range[1]-range[0]);
+	  } catch (Exception ex) {
+		  Logger.getLogger(IntuitService.class).error(ex);
+	  }
 	  
 	  JSONArray result = new JSONArray(employees);
 	  

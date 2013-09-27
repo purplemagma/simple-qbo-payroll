@@ -5,6 +5,8 @@ import oauth.signpost.basic.DefaultOAuthConsumer;
 
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
@@ -210,5 +212,24 @@ public class QBOSimplePayroll implements QBOPlugin
     mapper.save(company, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
     session.setAttribute("validOAuthConsumer", null);
   }
+  
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+	
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	HttpServletRequest request;
+  
+  public String getTicket() {
+	  for (Cookie cookie: request.getCookies()) {
+		  if (cookie.getName().equals("qbn.ptc.tkt")) {
+			  return cookie.getValue();
+		  }
+	  }
+	  return null;
+   }
 
 }
