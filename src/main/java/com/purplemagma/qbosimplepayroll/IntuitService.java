@@ -66,13 +66,14 @@ public class IntuitService
     state.dataSource = dataSource == null ? null : ServiceType.valueOf(dataSource);
     state.realmId = realmId;
     state.consumer = consumer;
-    state.context = new Context(state.authorizer, Config.getAppToken(), state.dataSource, state.realmId);
+    state.context = new Context(state.authorizer, com.purplemagma.qbosimplepayroll.Config.getAppToken(), state.dataSource, state.realmId);
     
     // Set up properties for V2
     Properties props = new Properties();
-    props.setProperty("workplace.server", com.intuit.ipp.util.Config.getProperty(com.intuit.ipp.util.Config.BASE_URL_PLATFORMSERVICE));
-    props.setProperty("qbo.server", com.intuit.ipp.util.Config.getProperty(com.intuit.ipp.util.Config.BASE_URL_QBO).replaceAll("v3/company", "rest/"));
+    props.setProperty("workplace.server", com.purplemagma.qbosimplepayroll.Config.getProperty("platform_url"));
+    props.setProperty("qbo.server", com.purplemagma.qbosimplepayroll.Config.getProperty("qbo_url_v2"));
     com.intuit.platform.util.Config.configure(props);
+    
     getSession().setAttribute("isSessionState", state);
   }
   
@@ -84,7 +85,10 @@ public class IntuitService
 	  }
   }
   
-  public Context getContext() {
+  public Context getContext() {  
+    com.intuit.ipp.util.Config.setProperty(com.intuit.ipp.util.Config.BASE_URL_PLATFORMSERVICE, com.purplemagma.qbosimplepayroll.Config.getProperty("platform_url"));
+    com.intuit.ipp.util.Config.setProperty(com.intuit.ipp.util.Config.BASE_URL_QBO, com.purplemagma.qbosimplepayroll.Config.getProperty("qbo_url_v3"));
+    
 	  return getIntuitServiceSessionState().context;
   }
 
@@ -119,6 +123,16 @@ public class IntuitService
   public List<Customer> getCustomers() throws FMSException {
     DataService service = new DataService(getContext());
     return service.findAll(new Customer());
+  }
+
+  private PlatformSessionContext getV2PlatformSessionContext() {
+	  OAuthConsumer consumer = getIntuitServiceSessionState().consumer;
+	  OAuthCredentials credentials = new OAuthCredentials(consumer.getConsumerKey(), consumer.getConsumerSecret(), consumer.getToken(), consumer.getTokenSecret());
+	  PlatformSessionContext psc = new PlatformSessionContext(credentials,  com.purplemagma.qbosimplepayroll.Config.getAppToken());
+	  psc.setPlatformServiceType(PlatformServiceType.QBO);
+	  psc.setRealmID(getIntuitServiceSessionState().realmId);
+	  
+	  return psc;
   }
       
   /*
@@ -201,13 +215,4 @@ public class IntuitService
 	  return result;
   }
   
-  private PlatformSessionContext getV2PlatformSessionContext() {
-	  OAuthConsumer consumer = getIntuitServiceSessionState().consumer;
-	  OAuthCredentials credentials = new OAuthCredentials(consumer.getConsumerKey(), consumer.getConsumerSecret(), consumer.getToken(), consumer.getTokenSecret());
-	  PlatformSessionContext psc = new PlatformSessionContext(credentials, Config.getAppToken());
-	  psc.setPlatformServiceType(PlatformServiceType.QBO);
-	  psc.setRealmID(getIntuitServiceSessionState().realmId);
-	  
-	  return psc;
-  }
 }
