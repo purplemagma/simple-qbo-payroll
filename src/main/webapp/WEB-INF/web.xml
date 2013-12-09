@@ -5,7 +5,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <context-param>
     <description>url to where your app is running</description>
     <param-name>defaultAppRunUrl</param-name>
-    <param-value>QBOSimplePayroll-vcd4qh2gm6.elasticbeanstalk.com</param-value>
+    <param-value>qbo-developer-t9ryrm2yii.elasticbeanstalk.com</param-value>
   </context-param>
   <context-param>
     <description>Prefix on hostname for the reverse proxy you want to use when running in codenvy</description>

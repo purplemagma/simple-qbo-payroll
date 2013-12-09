@@ -36,11 +36,11 @@
         store : store,
         columns : [ {
           label : "Given Name",
-          field : "givenName",
+          field : "GivenName",
           sortable : false
         }, {
           label : "Family Name",
-          field : "familyName",
+          field : "FamilyName",
           sortable : false
         } ],
         selectionMode : "single",
