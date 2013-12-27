@@ -18,13 +18,15 @@ public class Config
   public static String getProperty(String name) {
     return intuitAnywhereProperties.getProperty(name);
   }
-  
+
   public static String getBaseUrl() {
-	  return System.getProperty("baseUrl") == null ?
-      		"https://"+com.codenvy.AppListener.getProxyHost() :
-      			System.getProperty("baseUrl");	  
+	  String baseUrl = System.getProperty("baseUrl") == null ?
+              Config.getProperty("base_url") : System.getProperty("baseUrl");
+
+      return baseUrl == null ?
+      		"https://"+com.codenvy.AppListener.getProxyHost() : baseUrl;
   }
-  
+
   public static String getOAuthConsumerKey() {
 	  return System.getProperty("oAuthConsumerKey") == null ? Config.getProperty("oauth_consumer_key") :
 		  System.getProperty("oAuthConsumerKey");
