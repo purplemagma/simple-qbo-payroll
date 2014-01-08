@@ -146,6 +146,11 @@
                 var baseUrl = document.location.origin + document.location.pathname.substr(0,document.location.pathname.lastIndexOf("/"));
                 qboXDM.navigate("xdmtrowser://"+baseUrl+"/trowser.jsp");
             };
+            document.getElementById("pullTab").onclick = function(){
+            	var stage = document.getElementsByClassName("stage-default")[0];
+            	stage.classList.toggle("stage-close");
+
+            };
           }
 // ]]>
   </script>
@@ -175,7 +180,7 @@
 	                </div>
 	            </div>
 	        </div>
-	        <button class="arrow-sprite pulltab"></button>
+	        <button class="arrow-sprite pulltab" id="pullTab"></button>
 	    </div>
 	
 	    <div class="tallerBreakDiv"></div>
