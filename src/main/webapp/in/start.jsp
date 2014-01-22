@@ -209,113 +209,29 @@
 	        <button class="arrow-sprite pulltab" id="pullTab"></button>
 	    </div>
 	
-	    <div class="tallerBreakDiv"></div>
-			<div class="page-content">
-        		<div class="divContent employee">
-		            <div>
-		                <div class="dijitInline dijitTextBox" role="presentation">
-		                <input class="dijitReset dijitInputInner" autocomplete="off" type="text" tabindex="0" placeholder="Filter by name" value=""/></div>
-		                <input type="checkbox" class="includeInactive"/>
-		                <label>Include inactive</label>
-		                <div class="floatRight">
-		                    <div class="topButtonBar">
-			                    <button type="button" class="button primary">New</button>
-			                 	<button type="button" class="button" disabled="disabled">Edit</button>
-			                 	<button type="button" class="button" disabled="disabled">Delete</button>
-			                    <button type="button" class="button" disabled="disabled">Report</button>
-			                    <button type="button" class="button" >Print</button>
-							</div>
-		                </div>
-		            </div>
-
-            		<div class="tallBreakDiv"></div>
-    			</div>
-           		<div class="listScroller" data-dojo-attach-point="_listScroller" style="height: 270px;">
-               		<div data-dojo-attach-point="_grid" class="ui-widget dgrid dgrid-grid qboDataGrid" id="dgrid_0" role="grid">
-               			<div class="dgrid-header dgrid-header-row ui-widget-header" role="row">
-               				<table class="dgrid-row-table" role="presentation" id="dgrid_0-header">
-               					<tr>
-               						<th class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item" role="columnheader" tabindex="0">Name</th>
-               						<th class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="columnheader">Phone Number</th>
-               						<th class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="columnheader">Email Address</th>
-               					</tr>
-               				</table>
-               			</div>
-               			<div class="dgrid-scroller" tabindex="-1" style="-webkit-user-select: none; margin-top: 34px; margin-bottom: 0px;">
-               				<div class="dgrid-content ui-widget-content" tabindex="0">
-               				<div role="row" class=" ui-state-default dgrid-row dgrid-row-even ui-state-active" id="dgrid_0-row-82">
-               					<table class="dgrid-row-table" role="presentation">
-               						<tr>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item dgrid-focus" role="gridcell" tabindex="0">
-               								<span style="margin-left: 0px">Charles Jim</span>
-               							</td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="gridcell"></td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="gridcell"></td>
-               						</tr>
-               					</table>
-               				</div>
-               				<div role="row" class=" ui-state-default dgrid-row dgrid-row-odd" id="dgrid_0-row-137">
-               					<table class="dgrid-row-table" role="presentation">
-               						<tr>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item" role="gridcell">
-               								<span style="margin-left: 0px">Danica Smith</span>
-               							</td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="gridcell"></td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="gridcell"></td>
-               						</tr>
-               					</table>
-               				</div>
-               				<div role="row" class=" ui-state-default dgrid-row dgrid-row-even" id="dgrid_0-row-138">
-               					<table class="dgrid-row-table" role="presentation">
-               						<tr>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item" role="gridcell">
-               								<span style="margin-left: 0px">Eloi Lewis</span>
-               							</td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="gridcell"></td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="gridcell"></td>
-               						</tr>
-               					</table>
-               				</div>
-               				<div role="row" class=" ui-state-default dgrid-row dgrid-row-odd" id="dgrid_0-row-185">
-               					<table class="dgrid-row-table" role="presentation">
-               						<tr>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item" role="gridcell">
-               								<span style="margin-left: 0px">Jamie Hayward</span>
-               							</td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="gridcell"></td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="gridcell"></td>
-               						</tr>
-               					</table>
-               				</div>
-               				<div role="row" class=" ui-state-default dgrid-row dgrid-row-even" id="dgrid_0-row-194">
-               					<table class="dgrid-row-table" role="presentation">
-               						<tr>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item" role="gridcell">
-               								<span style="margin-left: 0px">Jeff Sage</span>
-               							</td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="gridcell"></td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="gridcell"></td>
-               						</tr>
-               					</table>
-               				</div>
-               				<div role="row" class=" ui-state-default dgrid-row dgrid-row-odd" id="dgrid_0-row-177">
-               					<table class="dgrid-row-table" role="presentation">
-               						<tr>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-0 field-_item" role="gridcell">
-               								<span style="margin-left: 0px">Muhammad Walton</span>
-               							</td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-1 field-phoneNumber" role="gridcell"></td>
-               							<td class="dgrid-cell dgrid-cell-padding dgrid-column-2 field-email" role="gridcell"></td>
-               						</tr>
-               					</table>
-               				</div>
-               			</div>
-               		</div>
-               		<div class="dgrid-header-scroll dgrid-scrollbar-width ui-widget-header" style="height: 34px;"></div>
-               		<div class="dgrid-footer dgrid-footer-hidden"></div>
-               	</div>
-           	</div>
-    	</div>
+	    <div class="page-content">
+	      <div class="divContent employee">
+            <div>
+                <div class="dijitInline dijitTextBox" role="presentation">
+                <input class="dijitReset dijitInputInner" autocomplete="off" type="text" tabindex="0" placeholder="Filter by name" value=""/></div>
+                <input type="checkbox" class="includeInactive"/>
+                <label>Include inactive</label>
+                <div class="floatRight">
+                    <div class="topButtonBar">
+	                    <button type="button" class="button primary">New</button>
+	                 	<button type="button" class="button" disabled="disabled">Edit</button>
+	                 	<button type="button" class="button" disabled="disabled">Delete</button>
+	                    <button type="button" class="button" disabled="disabled">Report</button>
+	                    <button type="button" class="button" >Print</button>
+					</div>
+                </div>
+            </div>
+	        <div class="tallBreakDiv"><jsp:text/></div>
+	        <div class="listScroller" style="height: 270px;">
+	          <div id="grid" class="qboDataGrid"><jsp:text/></div>
+	        </div>
+	      </div>
+	    </div>	    
 	</div>
 </body>
 </html>
