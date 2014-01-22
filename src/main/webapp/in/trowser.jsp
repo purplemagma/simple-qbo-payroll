@@ -19,6 +19,9 @@
         // QBO will call you back when the channel is ready 
         function qboXDMReady() {
           document.getElementById("scroller").style.height = document.height-150;
+          document.getElementById("sendMessage").onclick = function () {
+            qboXDM.sendMessageToOtherFrames("a message from trowser");
+          };
           document.getElementById("closeTrowser").onclick = function () {
               qboXDM.closeTrowser();
           };
@@ -46,7 +49,8 @@
 		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:cancelButtonPressed">Cancel</button>
 		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:clearForm" data-qbo-bind="visible: showClear" style="display: none;">Clear</button>
 		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:revertForm" data-qbo-bind="visible: showRevert" style="display: none;">Revert</button>
-		        </div>
+                <button class="button primary" id="sendMessage">Send a message</button>
+            </div>
 		        <div class="tableCell bottomCenterButtons" data-qbo-bind="hidden: hasOldSalesTaxData">
 		            <div data-dojo-attach-event="onclick:printCheckButtonPressed" data-qbo-bind="visible:getShowPrintCheckButton" class="bottomCenterButton" style="display: none;">Print check</div>
 		            <div data-dojo-attach-event="onclick:printButtonPressed" data-qbo-bind="visible:showStickyFooterPrint" class="bottomCenterButton" data-dojo-attach-point="_printButton" style="display: none;">Print</div>

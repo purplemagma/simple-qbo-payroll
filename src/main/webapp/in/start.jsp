@@ -45,7 +45,7 @@
         } ],
         selectionMode : "single",
         maxRowsPerPage : 500,
-        bufferRows : 500,
+        bufferRows : 500
       }, "grid");
       grid.startup();
 
@@ -139,22 +139,48 @@
 	            innerSize : "45%",
 	            id : "mainSeries"
 	        }]
-	    });     
+	    });
     });    
         function qboXDMReady() {
-            document.getElementById("payrun").onclick = function () {
-                var baseUrl = document.location.origin + document.location.pathname.substr(0,document.location.pathname.lastIndexOf("/"));
-                qboXDM.navigate("xdmtrowser://"+baseUrl+"/trowser.jsp");
-            };
-            document.getElementById("pullTab").onclick = function(){
-            	var stage = document.getElementsByClassName("stage-default")[0];
-            	stage.classList.toggle("stage-close");
-
-            };
-          }
+          qboXDM.getContext(function (qboContext) {
+            if (qboContext.qbo.trowser === true && qboContext.qbo.activated !== true) {
+              // example that shows how to navigate to updated approute after activating the app
+              document.getElementById("notActivatedBlock").style.display = "block";
+              document.getElementById("activate").onclick = function () {
+                qboXDM.updateAppSubscriptionState(function () {
+                  qboXDM.closeTrowser();
+                  qboXDM.navigate("approute://employees");
+                }, function () {
+                  console.log("activation failure");
+                });
+              };
+            } else {
+              document.getElementById("activatedBlock").style.display = "block";
+              document.getElementById("payrun").onclick = function () {
+                qboXDM.navigate("xdmtrowser://qbo-simple-payroll/in/trowser.jsp");
+              };
+              document.getElementById("pullTab").onclick = function(){
+                var stage = document.getElementsByClassName("stage-default")[0];
+                stage.classList.toggle("stage-close");
+              };
+            }
+          });
+        }
+        function qboXDMReceiveMessage(message) {
+          console.log("Received a message:" + message);
+        }
 // ]]>
   </script>
-	<div class="lists employees">
+  <div class="page-content" id="notActivatedBlock" style="display: none">
+    <div class="divContent">
+      <div>
+        <div class="topButtonBar">
+          <button type="button" class="button" id="activate">Activate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+	<div class="lists employees" id="activatedBlock" style="display: none">
 	    <div class="stage stage-default">
 	        <div class="stage-header">
 	            <span class="page-title">Employees</span>
