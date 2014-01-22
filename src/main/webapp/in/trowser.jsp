@@ -42,14 +42,13 @@
           <div class="scroller" id="scroller" style="margin: 20px; height: 450px;">
             Hello, trowser!<br/>
           </div>
-
 		<footer class="stickyFooter table width100Percent" data-dojo-attach-point="_footer" data-qbo-bind="css:{existingTransaction:existingTransaction}">
 		    <div class="tableRow">
 		        <div class="tableCell bottomLeftButtons">
-		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:cancelButtonPressed">Cancel</button>
+		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:cancelButtonPressed" id="closeTrowser">Cancel</button>
 		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:clearForm" data-qbo-bind="visible: showClear" style="display: none;">Clear</button>
 		            <button tabindex="53" type="button" class="dark" data-dojo-attach-event="onclick:revertForm" data-qbo-bind="visible: showRevert" style="display: none;">Revert</button>
-                <button class="button primary" id="sendMessage">Send a message</button>
+                	<button class="button primary" id="sendMessage">Send a message</button>
             </div>
 		        <div class="tableCell bottomCenterButtons" data-qbo-bind="hidden: hasOldSalesTaxData">
 		            <div data-dojo-attach-event="onclick:printCheckButtonPressed" data-qbo-bind="visible:getShowPrintCheckButton" class="bottomCenterButton" style="display: none;">Print check</div>
