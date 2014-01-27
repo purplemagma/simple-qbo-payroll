@@ -148,7 +148,6 @@
               document.getElementById("notActivatedBlock").style.display = "block";
               document.getElementById("activate").onclick = function () {
                 qboXDM.updateAppSubscriptionState(function () {
-                  qboXDM.closeTrowser();
                   qboXDM.navigate("approute://employees");
                 }, function () {
                   console.log("activation failure");
