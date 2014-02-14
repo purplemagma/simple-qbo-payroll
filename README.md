@@ -7,7 +7,7 @@
 
 ## Setup a local app server (Java)
 - git clone https://github.com/purplemagma/intuit-qbo-plugin for an internal app or https://github.com/purplemagma/simple-qbo-payroll for an external app
-- update app.properties with app token, oauth key and oauth secret
+- update app.properties with app token, oauth key and oauth secret. Uncomment base_url and set it to your app url.
 - mvn package
 - deploy produced war file to your java web server (e.g. apache tomcat). Your server should support https.
 
