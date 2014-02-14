@@ -65,69 +65,69 @@ Use this method to close the trowser.
 
 ### qboXDM.getContext(function(context){})
 This calls provided function with a qbo context object containing the following data:
-  {
-      "qbo": {
-          "sku": {
-              "isClassicMigrator": false,
-              "isSimpleStartSku": false,
-              "id": 7,
-              "isGlobalCompany": false,
-              "isBasicSku": false,
-              "mnemonic": "PLUS",
-              "isUsingFY14DTX": true,
-              "name": "QuickBooks Online Plus",
-              "isPlusSku": true,
-              "isAccountantSku": false,
-              "isPayrollSku": true,
-              "isEligibleForDesktopImport": true
-          },
-          "isSampleCompany": false,
-          "companyName": "testusc11",
-          "user": {
-              "lastName": "test",
-              "phone": "",
-              "email": "alexey_povkh@intuit.com",
-              "name": "test test",
-              "firstName": "test"
-          },
-          "companyL10nAttribs": {
-              "region": "US",
-              "currencyDisplayName": "United States Dollar",
-              "dateFormatDelimiter": "/",
-              "currencySymbolPos": "BEFORE",
-              "defaultDateFormat": "MM/dd/yyyy",
-              "locale": "en-us",
-              "isMulticurrencyAvailable": false,
-              "shortDateFormat": "M/d/yy",
-              "digitGroupSeparator": ",",
-              "isMulticurrencyEnabled": false,
-              "printFormDateFormat": "MM/dd/yyyy",
-              "decimalSeparator": ".",
-              "mediumTimeFormat": "HH:mm:ss",
-              "currencyIsoCode": "USD",
-              "currencySymbol": "$",
-              "digitGroupSize": 3,
-              "mediumDateFormat": "M/d/yyyy",
-              "shortTimeFormat": "hh:mm a",
-              "qboaClientCollaboratorEnabled": true,
-              "dateFormatYearIndex": 2,
-              "printCheckDateFormat": "M M D D Y Y Y Y",
-              "defaultDateTimeFormat": "MM/dd/yyyy hh:mm:ss a",
-              "dateFormatDateIndex": 1,
-              "dateFormatMonthIndex": 0
-          },
-          "realmId": "1034669440",
-          "v3ServiceBaseUrl": "https://e2e.qbo.intuit.com/qbo11/v3/company/1034669440/",
-          "v3NeoServiceBaseUrl": "https://e2e.qbo.intuit.com/qbo11/neoservice/",
-          "baseUrl": "https://e2e.qbo.intuit.com/qbo11",
-          "trowser": false,
-          "activated": true
-      },
-      "params": {
-          "accessPoint": "_apExample",
-          "locale": "en-us"
-      }
-  }
+    {
+        "qbo": {
+            "sku": {
+                "isClassicMigrator": false,
+                "isSimpleStartSku": false,
+                "id": 7,
+                "isGlobalCompany": false,
+                "isBasicSku": false,
+                "mnemonic": "PLUS",
+                "isUsingFY14DTX": true,
+                "name": "QuickBooks Online Plus",
+                "isPlusSku": true,
+                "isAccountantSku": false,
+                "isPayrollSku": true,
+                "isEligibleForDesktopImport": true
+            },
+            "isSampleCompany": false,
+            "companyName": "testusc11",
+            "user": {
+                "lastName": "test",
+                "phone": "",
+                "email": "alexey_povkh@intuit.com",
+                "name": "test test",
+                "firstName": "test"
+            },
+            "companyL10nAttribs": {
+                "region": "US",
+                "currencyDisplayName": "United States Dollar",
+                "dateFormatDelimiter": "/",
+                "currencySymbolPos": "BEFORE",
+                "defaultDateFormat": "MM/dd/yyyy",
+                "locale": "en-us",
+                "isMulticurrencyAvailable": false,
+                "shortDateFormat": "M/d/yy",
+                "digitGroupSeparator": ",",
+                "isMulticurrencyEnabled": false,
+                "printFormDateFormat": "MM/dd/yyyy",
+                "decimalSeparator": ".",
+                "mediumTimeFormat": "HH:mm:ss",
+                "currencyIsoCode": "USD",
+                "currencySymbol": "$",
+                "digitGroupSize": 3,
+                "mediumDateFormat": "M/d/yyyy",
+                "shortTimeFormat": "hh:mm a",
+                "qboaClientCollaboratorEnabled": true,
+                "dateFormatYearIndex": 2,
+                "printCheckDateFormat": "M M D D Y Y Y Y",
+                "defaultDateTimeFormat": "MM/dd/yyyy hh:mm:ss a",
+                "dateFormatDateIndex": 1,
+                "dateFormatMonthIndex": 0
+            },
+            "realmId": "1034669440",
+            "v3ServiceBaseUrl": "https://e2e.qbo.intuit.com/qbo11/v3/company/1034669440/",
+            "v3NeoServiceBaseUrl": "https://e2e.qbo.intuit.com/qbo11/neoservice/",
+            "baseUrl": "https://e2e.qbo.intuit.com/qbo11",
+            "trowser": false,
+            "activated": true
+        },
+        "params": {
+            "accessPoint": "_apExample",
+            "locale": "en-us"
+        }
+    }
 
 ### qboXDM.navigate(url, data)
 *url* is a combination of *protocol* (xdmtrowser:// or approute://) and *path*
