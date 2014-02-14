@@ -65,6 +65,7 @@ Use this method to close the trowser.
 
 ### qboXDM.getContext(function(context){})
 This calls provided function with a qbo context object containing the following data:
+
     {
         "qbo": {
             "sku": {
