@@ -44,7 +44,8 @@ Please prepare a configuration block for your app in the following format and su
             "accessPoints": [
                 {
                     "attachPoint": "_apSettingsSettingsList",
-                    "linkText": "Your Settings"
+                    "linkText": "Your Settings",
+                    "trowser": true
                 },
                 {
                     "attachPoint": "_apCreateEmployeesList",
@@ -126,7 +127,8 @@ This calls provided function with a qbo context object containing the following 
         },
         "params": {
             "accessPoint": "_apExample",
-            "locale": "en-us"
+            "locale": "en-us",
+            "version": "72.158"
         }
     }
 
