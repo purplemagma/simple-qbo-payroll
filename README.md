@@ -25,23 +25,26 @@ Some features including app activation and region restriction are only available
 Please prepare a configuration block for your app in the following format and submit it to your contact person at QBO.
 
     "your_app_id": {
+        "pluginId": "your_app_id",
         "appToken": "your_app_token",
         "sourceUrl": "https://your.integration.com",
         "regions": [
             "US"
         ],
-        "overrideAppRoutes": [
-            "pre_activation_override"
+        "accessPoints": [
+            {
+                "overrideAppRoute": "addpayroll"
+            }
         ],
         "canonicalName": "your_app_canonical_name",
         "allowedOrigins": ["https://your.integration.com"],
         "trowser": true,
         "postActivation": {
             "trowser": false,
-            "overrideAppRoutes": [
-                "post_activation_override"
-            ],
             "accessPoints": [
+                {
+                    "overrideAppRoute": "employees"
+                },
                 {
                     "attachPoint": "_apSettingsSettingsList",
                     "linkText": "Your Settings",
