@@ -31,7 +31,7 @@ class MyProxyResource(proxy.ReverseProxyResource):
         return MyProxyResource(self.path + '/' + urlquote(path, safe=""), self.reactor)
 
     def render(self, request):
-        host = MyProxyResource.hostMap.get(request.getRequestHostname(), 'www.purplemagma.com')
+        host = MyProxyResource.hostMap.get(request.getRequestHostname(), 'www.intuit.com')
         port = 80
         print 'Rendering...',request.getRequestHostname(), 'to', host,
         request.received_headers['host'] = host
@@ -48,7 +48,26 @@ class MyProxyResource(proxy.ReverseProxyResource):
         print 'Success'
         return server.NOT_DONE_YET
 
+class ChainedOpenSSLContextFactory(ssl.DefaultOpenSSLContextFactory):
+    def __init__(self, privateKeyFileName, certificateChainFileName,
+                 sslmethod=ssl.SSL.SSLv23_METHOD):
+        """
+        @param privateKeyFileName: Name of a file containing a private key
+        @param certificateChainFileName: Name of a file containing a certificate chain
+        @param sslmethod: The SSL method to use
+        """
+        self.privateKeyFileName = privateKeyFileName
+        self.certificateChainFileName = certificateChainFileName
+        self.sslmethod = sslmethod
+        self.cacheContext()
+    
+    def cacheContext(self):
+        ctx = ssl.SSL.Context(self.sslmethod)
+        ctx.use_certificate_chain_file(self.certificateChainFileName)
+        ctx.use_privatekey_file(self.privateKeyFileName)
+        self._context = ctx
+
 site = server.Site(MyProxyResource(''))
 reactor.listenTCP(80, site)
-reactor.listenSSL(443, site, ssl.DefaultOpenSSLContextFactory('server.pem','server.crt'))
+reactor.listenSSL(443, site, ChainedOpenSSLContextFactory('server.pem','server.crt'))
 reactor.run()
