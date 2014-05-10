@@ -4,7 +4,10 @@ from twisted.internet import reactor, ssl
 from twisted.web import proxy, server, static, resource
 
 class MyProxyResource(proxy.ReverseProxyResource):
-    hostMap = {}
+    hostMap = {
+        "preview-us.codenvy.ctof.intuit.com": "preview.us.intuit.codenvy.com",
+    "preview-asia.codenvy.ctof.intuit.com":"preview.asia.cf.codenvy-stg.com"
+}
     proxyClientFactoryClass = proxy.ProxyClientFactory
 
     def __init__(self, path, reactor=reactor):
@@ -27,13 +30,13 @@ class MyProxyResource(proxy.ReverseProxyResource):
             resource = static.Data("<html><body>Mapped: %s to %s</body></html>" % (host, MyProxyResource.hostMap[host]), "text/html");
             resource.isLeaf = True
             return resource
- 
+
         return MyProxyResource(self.path + '/' + urlquote(path, safe=""), self.reactor)
 
     def render(self, request):
         host = MyProxyResource.hostMap.get(request.getRequestHostname(), 'www.intuit.com')
         port = 80
-        print 'Rendering...',request.getRequestHostname(), 'to', host,
+        print 'Rendering...',request.uri, 'to', host,
         request.received_headers['host'] = host
         request.content.seek(0, 0)
         qs = urlparse.urlparse(request.uri)[4]
@@ -43,7 +46,7 @@ class MyProxyResource(proxy.ReverseProxyResource):
             rest = self.path
         clientFactory = self.proxyClientFactoryClass(
           request.method, rest, request.clientproto,
-	  request.getAllHeaders(), request.content.read(), request)
+      request.getAllHeaders(), request.content.read(), request)
         self.reactor.connectTCP(host, port, clientFactory)
         print 'Success'
         return server.NOT_DONE_YET
@@ -60,7 +63,7 @@ class ChainedOpenSSLContextFactory(ssl.DefaultOpenSSLContextFactory):
         self.certificateChainFileName = certificateChainFileName
         self.sslmethod = sslmethod
         self.cacheContext()
-    
+
     def cacheContext(self):
         ctx = ssl.SSL.Context(self.sslmethod)
         ctx.use_certificate_chain_file(self.certificateChainFileName)
