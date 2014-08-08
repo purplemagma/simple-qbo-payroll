@@ -63,6 +63,19 @@ Please prepare a configuration block for your app in the following format and su
 ## Overview
 This sample app provides basic functionality along with openId and oAuth authorization flows integrated. App activation occurs when you receive the oauth token on behalf of the user.
 
+## How to initialize a qboXDM object
+Add the following script to your html head element:
+
+    <script type="text/javascript">
+    //<![CDATA[
+        window.addEventListener("message",function(a){if(a.origin.indexOf("intuit.com")>=1&&a.data&&a.data.initXDM)
+        {var b=document.createElement("script");b.setAttribute("type","text/javascript");b.innerHTML=a.data.initXDM;
+         document.getElementsByTagName("head")[0].appendChild(b)}});
+     // ]]>
+    </script>
+
+It listens for a message from QBO that adds additional scripts, initializes qboXDM object and calls qboXDMReady() function that you need to define as well. By the time that function is called you can access a globally defined qboXDM object.
+
 ## Methods available in the qboXDM Object
 ### qboXDM.closeTrowser()
 Use this method to close the trowser.
@@ -175,6 +188,14 @@ Internal apps only. Subscribes(activates) an app and updates QBO UI state.
 ### qboXDM.track(method, args)
 
 Use this method to call QBO tracking API directly.
+
+### qboXDM.getModel()
+
+Returns parent node model. Model can be used to access state information on the parent node.
+
+### qboXDM.setModelProperty(name, value)
+
+Sets a property on the parent model to a specified value.
 
 ## Functions available for integration
 ### qboXDMReceiveMessage(message)
