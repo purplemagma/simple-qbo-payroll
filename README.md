@@ -197,6 +197,34 @@ Returns parent node model. Model can be used to access state information on the 
 
 Sets a property on the parent model to a specified value.
 
+### qboXDM.getModelProperty(name)
+
+Gets a property from the parent model.
+
+### qboXDM.updateQuickFillStore(storeId)
+
+Refreshes specified quickfill store data
+
+### qboXDM.emitEvent(eventId, data)
+
+Sends an event to QBO, plugin must register for events it's allowed to send through the configuration (allowedEvents property, array of strings)
+
+### qboXDM.adjustFrameHeight(height)
+
+Sets iframe height to specified value, support pixel and percent options, must be string
+
+### qboXDM.adjustFrameWidth(width)
+
+Sets iframe width to specified value, support pixel and percent options, must be string
+
+### qboXDM.showSpinner(callbackFn)
+
+Shows a spinner, calls callbackFn with a "timeout"  value that equals to amount of time spinner will be shown for. If there is need to show spinner for longer than default timeout, this method has to be called again to reset the timeout.
+
+### qboXDM.hideSpinner()
+
+Hides currently displayed spinner
+
 ## Functions available for integration
 ### qboXDMReceiveMessage(message)
 Implement this function to receive messages from QBO as well as from the frames of your application (e.g. from trowser to main frame and vice versa)
