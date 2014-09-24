@@ -209,6 +209,10 @@ Refreshes specified quickfill store data
 
 Sends an event to QBO, plugin must register for events it's allowed to send through the configuration (allowedEvents property, array of strings)
 
+### publishTopic(topicId, data)
+
+Publishes a message to a topic registered in QBO, plugin must register for topics it's allowed to send to through the configuration (allowedTopics property, array of strings)
+
 ### qboXDM.adjustFrameHeight(height)
 
 Sets iframe height to specified value, support pixel and percent options, must be string
