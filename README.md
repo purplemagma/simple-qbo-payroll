@@ -36,6 +36,7 @@ Please prepare a configuration block for your app in the following format and su
                 "overrideAppRoute": "addpayroll"
             }
         ],
+        "subscribedEvents": [qbo-action-settings-save],
         "canonicalName": "your_app_canonical_name",
         "allowedOrigins": ["https://your.integration.com"],
         "trowser": true,
@@ -230,8 +231,72 @@ Shows a spinner, calls callbackFn with a "timeout"  value that equals to amount 
 Hides currently displayed spinner
 
 ## Functions available for integration
-### qboXDMReceiveMessage(message)
+### qboXDMReceiveMessage(message, successFn, errorFn)
 Implement this function to receive messages from QBO as well as from the frames of your application (e.g. from trowser to main frame and vice versa)
+
+#### Available QBO events
+You can subscribe to the following events by adding them to the subscribedEvents list in your plugin configuration.
+qbo-action-settings-* events are part of company settings integration.
+
+##### qbo-action-settings-dirty_check
+    Sent when QBO needs to know if model is dirty (i.e. user navigates away or clicks on another settings section)
+
+    if (message.eventName === "qbo-action-settings-dirty_check") {
+        var isModelDirty = false,
+        timeout = message.data.timeout; // amount of time in ms before QBO assumes there is an error
+        ToDo: add logic for checking if model is in dirty state
+        successFn({
+            result: isModelDirty
+        });
+    }
+
+##### qbo-action-settings-save
+    Sent when settings section state needs to be saved.
+
+    if (message.eventName === "qbo-action-settings-save") {
+        var timeout = message.data.timeout; // amount of time in ms before QBO assumes there is an error
+        // ToDo: attempt to save settings
+        // on success call:
+        successFn();
+        // on handled validation failure call
+        //errorFn({handled: true});
+        // on error call
+        //errorFn({message: "Failed to save your data"});
+        // if you need more processing time than timeout, call the following function.
+        // this will reset the timeout counter and give you more time to perform saving action
+        // you can extend up to 2 times
+        // a separate 'qbo-action-settings-save' messages will be sent each time
+        //errorFn({extend: true});
+    }
+
+##### qbo-action-settings-switch
+    Sent when settings section changes it's edit state. For example when user rejects changes and navigates away.
+
+    if (message.eventName === "qbo-action-settings-switch") {
+        var editMode = message.data.editMode;
+        // ToDo: perform some internal logic based on knowing that settings entered/exited edit mode (e.g. show/hide save button)
+        // you can change size of your iframe here if necessary by calling qboXDM.adjustFrameHeight(height) function
+    }
+
+##### qbo-request-page_context
+For integration with QBO help system.
+Sent when help module requests information about current page.
+
+    if (message.eventName === "qbo-request-page_context") {
+        successFn({pageName:"pluginPageName", productName:"pluginProductName", productEdition:"pluginProductEdition"});
+    }
+
+##### qbo-action-UniversalCrud-save
+For integration to the transaction forms (invoice, bill, etc).
+Sent before form is saved.
+
+    if (message.eventName === "qbo-action-UniversalCrud-save") {
+        if (success) {
+            successFn();
+        } else {
+            errorFn("error message");
+        }
+    }
 
 ### qboXDMReady()
 Implement this function, it will be called when qboXDM object becomes available.
