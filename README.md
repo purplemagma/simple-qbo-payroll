@@ -239,7 +239,7 @@ You can subscribe to the following events by adding them to the subscribedEvents
 qbo-action-settings-* events are part of company settings integration.
 
 ##### qbo-action-settings-dirty_check
-    Sent when QBO needs to know if model is dirty (i.e. user navigates away or clicks on another settings section)
+Sent when QBO needs to know if model is dirty (i.e. user navigates away or clicks on another settings section)
 
     if (message.eventName === "qbo-action-settings-dirty_check") {
         var isModelDirty = false,
@@ -251,7 +251,7 @@ qbo-action-settings-* events are part of company settings integration.
     }
 
 ##### qbo-action-settings-save
-    Sent when settings section state needs to be saved.
+Sent when settings section state needs to be saved.
 
     if (message.eventName === "qbo-action-settings-save") {
         var timeout = message.data.timeout; // amount of time in ms before QBO assumes there is an error
@@ -270,7 +270,7 @@ qbo-action-settings-* events are part of company settings integration.
     }
 
 ##### qbo-action-settings-switch
-    Sent when settings section changes it's edit state. For example when user rejects changes and navigates away.
+Sent when settings section changes it's edit state. For example when user rejects changes and navigates away.
 
     if (message.eventName === "qbo-action-settings-switch") {
         var editMode = message.data.editMode;
