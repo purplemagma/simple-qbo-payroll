@@ -36,11 +36,12 @@ Please prepare a configuration block for your app in the following format and su
                 "overrideAppRoute": "addpayroll"
             }
         ],
-        "subscribedEvents": [qbo-action-settings-save],
+        "subscribedEvents": ["qbo-action-settings-save"],
         "canonicalName": "your_app_canonical_name",
         "allowedOrigins": ["https://your.integration.com"],
         "trowser": true,
-        "postActivation": {
+        "configurations": {
+            "activated": {
             "trowser": false,
             "accessPoints": [
                 {
@@ -57,6 +58,15 @@ Please prepare a configuration block for your app in the following format and su
                     "position": 0
                 }
             ]
+            },
+            "unavailable": {
+                "accessPoints": []
+            }
+        },
+        "heartbeat": {
+            "url": "https://localhost.intuit.com/java-web-sample/heartbeat.jsp",
+            "failoverConfiguration": "unavailable",
+            "checkIntervalSeconds": 60
         }
     }
 
@@ -229,6 +239,10 @@ Shows a spinner, calls callbackFn with a "timeout"  value that equals to amount 
 ### qboXDM.hideSpinner()
 
 Hides currently displayed spinner
+
+### qboXDM.switchConfiguration(configuration)
+
+Switches plugin to a pre-defined configuration or default if null is passed. If configuration matches heartbeat failover configuration a retry process with default timeout will be triggered.
 
 ## Functions available for integration
 ### qboXDMReceiveMessage(message, successFn, errorFn)
