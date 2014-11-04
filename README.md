@@ -164,7 +164,10 @@ This calls provided function with a qbo context object containing the following 
 
 	qboXDM.navigate("xdmtrowser://qbo-simple-payroll/in/trowser.jsp");
 This will load the *path* which is relative to your domain in a trowser that supports cross-domain messaging. If *data* is specified it will be available in the context object.
-  
+
+ 	qboXDM.navigate("xdmtrowser://https://your.allowed.domain.com/qbo-simple-payroll/in/trowser.jsp");
+This is similar to the previous but takes a full url, make sure it's included in your plugin's allowedOrigins
+
 	qboXDM.navigate("approute://employees");
 Navigates to a QBO page specified by *path*
 
