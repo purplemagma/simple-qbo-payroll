@@ -295,14 +295,6 @@ Sent when settings section changes it's edit state. For example when user reject
         // you can change size of your iframe here if necessary by calling qboXDM.adjustFrameHeight(height) function
     }
 
-##### qbo-request-page_context
-For integration with QBO help system.
-Sent when help module requests information about current page.
-
-    if (message.eventName === "qbo-request-page_context") {
-        successFn({pageName:"pluginPageName", productName:"pluginProductName", productEdition:"pluginProductEdition"});
-    }
-
 ##### qbo-action-UniversalCrud-save
 For integration to the transaction forms (invoice, bill, etc).
 Sent before form is saved.
@@ -313,6 +305,24 @@ Sent before form is saved.
         } else {
             errorFn("error message");
         }
+    }
+
+##### qbo-action-navigation-switch
+Issued when user navigates to the page that is already opened, i.e. clicks on the employees tab when already on the employees page.
+Partner's iframe need to reset their content accordingly.
+
+    if (message.eventName === "qbo-action-navigation-switch") {
+        if (message.data.path === "employees") {
+            document.location.href = message.data.url;
+        }
+    }
+
+##### qbo-request-page_context
+For integration with QBO help system.
+Sent when help module requests information about current page.
+
+    if (message.eventName === "qbo-request-page_context") {
+        successFn({pageName:"pluginPageName", productName:"pluginProductName", productEdition:"pluginProductEdition"});
     }
 
 ### qboXDMReady()
