@@ -239,6 +239,54 @@ Sets iframe width to specified value, support pixel and percent options, must be
 
 Shows a spinner, calls callbackFn with a "timeout"  value that equals to amount of time spinner will be shown for. If there is need to show spinner for longer than default timeout, this method has to be called again to reset the timeout.
 
+If you need to show spinner continuously until some event occurs e.g. showing a spinner when doing an xhr and hiding the spinner when the request completes, you can do something like this: 
+
+	function () {
+		// url to make xhr to
+	    	var url = context.qbo.baseUrl + "/productservice/v1/payroll/" + context.qbo.realmId + "/add";
+	
+	    	// get XMLHttpRequest object
+	    	var xhr = createCORSRequest('POST', url, true);
+	
+	    	xhr.onload = function() {
+	        	// set hideSpinner closure variable to false
+	        	hideSpinner = true;
+	               
+	        	// and also hide spinner immediately
+	        	qboXDM.hideSpinner();
+	
+	        	// show xhr success msg
+	    	};
+	
+	    	// beginning - show spinner before making the request
+	    	var hideSpinner = false;
+	
+	    	var timeOutCallback = function () {                            
+	        	if (hideSpinner) {
+	            	qboXDM.hideSpinner();
+	        	} else {
+	            	// if hideSpinner is not set to true by xhr callback handler, then keep on showing the spinner.
+	            	qboXDM.showSpinner(showSpinnerCallback);
+	        	}
+	    	};
+	
+		    // this callback is called right away by qboXDM.showSpinner with the argument obj containing timeoutInterval.
+		    // we set timer with that timeoutInterval to check if we need to continue to show spinner            
+		    var showSpinnerCallback = function (obj) {                
+	        	// check after the timeoutInterval/2 if we need to continue to show spinner. 
+	        	// timeoutInterval/2 rather than timeoutInterval so that we show the spinner continously rather than showing for 5 secs, hiding for a sec and showing again
+		        window.setTimeout(timeOutCallback, obj.timeout/2);                            
+		    };
+	            
+	    	qboXDM.showSpinner(showSpinnerCallback);
+	    	// end - show spinner before making the request
+	
+	    	// Make the xhr
+	    	xhr.send(JSON.stringify({
+	        	"accessPoint": context.params.pc_upsell_ipd_ap
+	    	}));
+	}
+
 ### qboXDM.hideSpinner()
 
 Hides currently displayed spinner
