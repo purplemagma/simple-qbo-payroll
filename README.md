@@ -176,6 +176,127 @@ Navigates to a QBO page specified by *path*
 
 Send messages to other frames of your application, e.g. from trowser to main frame and vice versa
 
+### qboXDM.showOkDialog(title, message, options, okBtnFn)
+Shows a modal dialog with just an OK button
+
+Arguments: options and okBtnFn are optional
+    
+    qboXDM.showOkDialog("some title", "You know nothing, Jon Snow!", 
+        {"iconClass": "confirmIcon"}, 
+        function () {
+            console.log("OK button clicked");
+        }
+    );
+
+### qboXDM.showYesNoDialog(title, message, options, yesBtnFn, noBtnFn)
+Shows a modal dialog with a Yes and a No button
+Arguments: options, yesBtnFn and noBtnFn are optional
+    
+    qboXDM.showYesNoDialog("some title", "Are you sure you want to simply walk into Mordor?", 
+        {"iconClass": "alertIcon"}, 
+        function () {
+            console.log("yes button clicked");
+        }, 
+        function () {
+            console.log("no button clicked");
+        }
+    );
+
+### qboXDM.showOkCancelDialog(title, message, options, okBtnFn, cancelBtnFn)
+Shows a modal dialog with an OK and a Cancel button
+Arguments: options, okBtnFn and cancelBtnFn are optional
+    
+    qboXDM.showOkCancelDialog("some title", "Brace yourself. Winter is coming!", 
+        {"iconClass": "warningIcon"}, 
+        function () {
+            console.log("OK button clicked");
+        }, function () {
+            console.log("Cancel button clicked");
+        }
+    );
+
+### qboXDM.showContinueCancelDialog(title, message, options, callbackFn)
+Shows a modal dialog with a Continue and a Cancel button and optionally shows a checkbox that allows user to choose not to be shown
+this dialog again
+Arguments: options and callbackFn are optional
+
+callbackFn will be called with an argument object with action param value: continueFn, cancelFn or ignoreFn
+e.g. {"action": "continueFn"}
+The callback function will get {"action": "continueFn"} when continue button is clicked and 
+{"action": "cancelFn"} when cancel button is clicked
+
+Ignore functionality is rarely used. You use it when you want to show a checkbox to end-user to not show this dialog 
+(usually a warning) again.
+You will have to pass in an options object like: 
+    
+    { 
+        iconClass: "warningIcon", 
+        showCheckBox : true, 
+        dontShowAgain: "I'm Sauron! I don't want to be see this warning again.", 
+        pref: "ignoreMordorWarningPopUp"
+    }
+
+Callback with ignoreFn argument will be called when the dialog is invoked again after the end-user has already asked us not to show the dialog
+again. 
+
+    qboXDM.showContinueCancelDialog("title", "Are you sure you want to simply walk into Mordor?", 
+        { 
+            iconClass: "warningIcon", 
+            showCheckBox : true, 
+            dontShowAgain: "I'm Sauron! I don't want to be see this warning again.", 
+            pref: "ignoreMordorWarningPopUp"
+        },
+        function (obj) {
+            switch (obj.action) {
+                case "continueFn":
+                    console.log("Do something when continue button is clicked");
+                    break;
+                case "cancelFn":
+                    console.log("Do something when cancel button is clicked");
+                    break;
+                case "ignoreFn":
+                    console.log("Do something when dialog show is invoked even after user has explicitly said that he doesn't want to be shows this dialog again.");
+                    break;
+                default:
+                    console.error("Default case should not be ivoked"); 
+            }
+        }
+    );
+
+### qboXDM.showDialogWithCustomButtons(title, message, labels, options, callbackFn)
+Shows a modal dialog with buttons as specified in labels array
+Arguments: options and callbackFn are optional
+
+callbackFn will be called with an argument object with labelId value: array index of the label in the array
+
+    qboXDM.showDialogWithCustomButtons("Referral sent",
+        "When your friend subscribed, you will receive an email about your Amazon gift card", 
+        [
+            {
+                "label": "Refer another friend", 
+                "section": -1
+            }, {
+                "label": "Close",
+                "primary": true, 
+                "section": 1
+            }
+        ],
+        {
+            "iconClass": "confirmIcon"
+        },
+        function (evt) {
+            switch (evt.labelId) {
+                case 0:
+                    qboXDM.navigate("approute://referrals");
+                    break;
+
+                case 1:
+                    console.log("Do something with click on close button");
+                    break;
+            }
+        }
+    );
+
 ### qboXDM.showDialog(dialogClassName, data, args)
 	qboXDM.showDialog("qbo/lists/name/employee/EmployeeDialogViewController");
  
