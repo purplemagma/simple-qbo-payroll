@@ -190,6 +190,7 @@ Arguments: options and okBtnFn are optional
 
 ### qboXDM.showYesNoDialog(title, message, options, yesBtnFn, noBtnFn)
 Shows a modal dialog with a Yes and a No button
+
 Arguments: options, yesBtnFn and noBtnFn are optional
     
     qboXDM.showYesNoDialog("some title", "Are you sure you want to simply walk into Mordor?", 
@@ -204,6 +205,7 @@ Arguments: options, yesBtnFn and noBtnFn are optional
 
 ### qboXDM.showOkCancelDialog(title, message, options, okBtnFn, cancelBtnFn)
 Shows a modal dialog with an OK and a Cancel button
+
 Arguments: options, okBtnFn and cancelBtnFn are optional
     
     qboXDM.showOkCancelDialog("some title", "Brace yourself. Winter is coming!", 
@@ -218,15 +220,18 @@ Arguments: options, okBtnFn and cancelBtnFn are optional
 ### qboXDM.showContinueCancelDialog(title, message, options, callbackFn)
 Shows a modal dialog with a Continue and a Cancel button and optionally shows a checkbox that allows user to choose not to be shown
 this dialog again
+
 Arguments: options and callbackFn are optional
 
 callbackFn will be called with an argument object with action param value: continueFn, cancelFn or ignoreFn
 e.g. {"action": "continueFn"}
+
 The callback function will get {"action": "continueFn"} when continue button is clicked and 
 {"action": "cancelFn"} when cancel button is clicked
 
 Ignore functionality is rarely used. You use it when you want to show a checkbox to end-user to not show this dialog 
 (usually a warning) again.
+
 You will have to pass in an options object like: 
     
     { 
@@ -265,6 +270,7 @@ again.
 
 ### qboXDM.showDialogWithCustomButtons(title, message, labels, options, callbackFn)
 Shows a modal dialog with buttons as specified in labels array
+
 Arguments: options and callbackFn are optional
 
 callbackFn will be called with an argument object with labelId value: array index of the label in the array
