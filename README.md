@@ -330,6 +330,12 @@ Internal apps only. Subscribes(activates) an app and updates QBO UI state.
 
 Use this method to call QBO tracking API directly.
 
+
+### qboXDM.log(method, args)
+	qboXDM.log("logError", [errorObj, "There was an error while doing an action");
+	qboXDM.log("logInfo", ["The plugin did the action correctly"]);
+Use this method to log an error or message to QBO. 
+
 ### qboXDM.getModel()
 
 Returns parent node model. Model can be used to access state information on the parent node.
