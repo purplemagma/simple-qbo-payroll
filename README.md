@@ -94,6 +94,8 @@ Use this method to close the trowser.
 ### qboXDM.getContext(function(context){})
 This calls provided function with a qbo context object containing the following data:
 
+US/QBO company file:
+
     {
         "qbo": {
             "sku": {
@@ -157,6 +159,98 @@ This calls provided function with a qbo context object containing the following 
             "locale": "en-us",
             "version": "72.158"
         }
+    }
+
+Canada/QBO company file via QBOA firm user example:
+
+    {
+      "qbo": {
+        "environment": "prod",
+        "sku": {
+          "returnToVO": "",
+          "isGlobalCompany": true,
+          "mnemonic": "PLUS",
+          "isPlusSku": true,
+          "id": 7,
+          "isSimpleStartSku": false,
+          "isClassicMigrator": false,
+          "isQBOLiteSku": false,
+          "isBasicSku": false,
+          "name": "QuickBooks Online Plus",
+          "isAccountantSku": true,
+          "isPayrollSku": false,
+          "hasInvitedAccountant": true,
+          "isEligibleForDesktopImport": true
+        },
+        "isSampleCompany": false,
+        "companyName": "testcac91",
+        "user": {
+          "lastName": “test”,
+          "phone": "",
+          "email": “test@mailinator.com",
+          "isMasterAdmin": false,
+          "name": “test test“,
+          "permissions": {
+            "userManagementPermission": "EDIT",
+            "subscriptionAndBillingPermission": "EDIT",
+            "accountingPermission": "ALL",
+            "companyInformationPermission": "EDIT",
+            "manageClientsPermission": "NONE"
+          },
+          "roleType": "FULL_ADMIN",
+          "isAdmin": true,
+          "type": "PRO_Accountant",
+          "firstName": “test”
+        },
+        "companyL10nAttribs": {
+          "region": "CA",
+          "isMulticurrencyAvailable": true,
+          "locale": "en-ca",
+          "isMulticurrencyEnabled": false,
+          "printFormDateFormat": "dd/MM/yyyy",
+          "decimalSeparator": ".",
+          "regionDefaultCurrencyIsoCode": "CAD",
+          "mediumTimeFormat": "HH:mm:ss",
+          "digitGroupSize": [
+            3
+          ],
+          "shortTimeFormat": "hh:mm a",
+          "defaultDateTimeFormat": "dd/MM/yyyy hh:mm:ss a",
+          "regionDefaultCurrencySymbol": "$",
+          "dateFormatMonthIndex": 1,
+          "currencyDisplayName": "Canadian Dollar",
+          "dateFormatDelimiter": "/",
+          "currencySymbolPos": "BEFORE",
+          "defaultDateFormat": "dd/MM/yyyy",
+          "digitGroupSeparator": ",",
+          "shortDateFormat": "d/M/yy",
+          "currencyIsoCode": "CAD",
+          "currencySymbol": "$",
+          "mediumDateFormat": "d/M/yyyy",
+          "qboaClientCollaboratorEnabled": true,
+          "dateFormatYearIndex": 2,
+          "printCheckDateFormat": "D D M M Y Y Y Y",
+          "dateFormatDateIndex": 0
+        },
+        "realmId": “1234567890”,
+        "firmId": “9876543210”,
+        "v3ServiceBaseUrl": "https://qdc.qbo.intuit.com/qbo91/v3/company/1234567890/",
+        "pathname": "/app/employees",
+        "search": "",
+        "baseUrl": "https://qdc.qbo.intuit.com/qbo91",
+        "trowser": false,
+        "activated": true,
+        "rootUrl": "https://qdc.qbo.intuit.com",
+      },
+      "params": {
+        "sourcePath": "/home.cfm?action=dashboard.employees&skiplayout=1",
+        "locale": "en-ca",
+        "version": "1712.1170",
+        "qbo.base_url": "https://qdc.qbo.intuit.com/qbo91",
+        "qboc": "91",
+        "realmId": "1234567890",
+        "xdmVersion": 1
+      }
     }
 
 ### qboXDM.navigate(url, data)
